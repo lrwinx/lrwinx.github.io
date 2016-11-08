@@ -1,0 +1,761 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,redis," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="redis不谈缓存和队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis不谈缓存和队列">
+<meta property="og:url" content="http://yoursite.com/2016/11/08/redis不谈缓存和队列/index.html">
+<meta property="og:site_name" content="Lrwin">
+<meta property="og:description" content="redis不谈缓存和队列">
+<meta property="og:updated_time" content="2016-11-08T06:32:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis不谈缓存和队列">
+<meta name="twitter:description" content="redis不谈缓存和队列">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 6277132159287297000,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> redis不谈缓存和队列 | Lrwin </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Lrwin</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Lrwin</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                redis不谈缓存和队列
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-08T10:10:16+08:00" content="2016-11-08">
+              2016-11-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/08/redis不谈缓存和队列/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/08/redis不谈缓存和队列/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h1><blockquote>
+<p>redis作为目前最流行的k-v存储系统之一，在实际的应用场景中如果使用redis就变的非常重要了。<br>由于大家都熟知redis可以用于缓存/队列的使用，并且网上有很多讲解内容，故在此不介绍redis的缓存/队列使用场景，本文更偏重于redis的其他使用场景。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h1><h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>在电商系统中，为了推荐自己的品牌和吸引用户量，那么会推出一个产品，这个产品只能被一个用户购买，如果一个用户正在购买时，其他用户点击购买的时候，则告知该用户，商品已经售出。</p>
+<h2 id="场景分析"><a href="#场景分析" class="headerlink" title="场景分析"></a>场景分析</h2><p>假设购买流程为:1.用户看到商品，2.用户点击购买，3.用户使用支付宝或微信支付，4.用户购买成功</p>
+<p>目前有2个用户:A和B</p>
+<p>场景并发现象:<br>用户A:1.用户看到商品，2.用户点击购买<br>用户B:1.用户看到商品，2.用户点击购买<br>此时用户A和用户B都进入到了第三步:3.用户使用支付宝或微信支付<br>那可能就会出现并发问题，两个用户都同时购买了1个商品。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>根据以往经验，可知，我们如上流程可以通过锁来进行控制，传统的数据库锁的方式在此不进行介绍了，来看一下redis是如何实现的。</p>
+<p>使用redis，我们可以解决两个用户同时操作一个数据流程的时候:</p>
+<ol>
+<li>当用户要购买此商品的时候，我们可以创建一个key,流程完成后，并改变此商品的出售状态(此商品已卖完)，删除key。</li>
+<li>其他用户在此想购买此商品的时候，去redis中读取这个key,如果key存在，那么就证明此商品正在被一个用户购买(这个用户正在购买的流程中),告知该用户，此商品已卖完</li>
+</ol>
+<p>这是我提出来的一个大概流程，但仔细思考起来，里边还有很多小细节，那我们来慢慢分析。</p>
+<h3 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h3><p>用户A:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; set buying A  (设置一个key的名称是buying，value是A) -&gt; 3.用户使用支付宝或微信支付 -&gt; 4.用户购买成功 -&gt; 更改商品出售状态 -&gt; delete buying （删除redis的key）<br>用户B:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying -&gt; echo “此商品已卖完”</p>
+<p>上边流程如果看懂了后，我们思考一个问题，当用户A操作到3.用户使用支付宝或微信支付时，突然用户由于一些突发情况，然后页面退出了，那么由于流程没有完成，所以这个redis中的key(buying)将一直存在，也就是说商品没有卖出，但是其他人再也不能买了。</p>
+<h3 id="版本2"><a href="#版本2" class="headerlink" title="版本2"></a>版本2</h3><p>由于要解决以上问题，我们需要把这样的一个购买时间设置一个有效期，比如说如果用户在30分钟内都未购买成功，那么不管是什么原因，我都应该让这个redis中的key失效，让用户此次购买的行为失效。</p>
+<p>也就是说，我们应该把buying设置一个有效期</p>
+<p>用户A:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; set buying A  (设置一个key的名称是buying，value是A) -&gt; set expire 30-&gt; 3.用户使用支付宝或微信支付 -&gt; 4.用户购买成功 -&gt; 更改商品出售状态 -&gt; delete buying （删除redis的key）<br>用户B:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying -&gt; echo “此商品已卖完”</p>
+<p>这个版本2中的用户A设置了一个key后，即使中途真的发生什么意外导致退出后，依然在指定时间后，其他用户可以继续购买。<br>那是否已经觉得这个方案很完美了呢？其实不然，我们把焦点放到set buying A(在redis设置key)的这点。<br>用户是这样操作的:<br>用户A:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying<br>用户B:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying<br>此时由于用户A和用户B同时点击购买（2.用户点击购买） 然后去读取buying，可能因为网络延迟问题，导致了同时都读取了buying,但是两个人读取buying这个key是不存在的,会产生后边的流程:<br>用户A:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying -&gt; set buying A<br>用户B:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying -&gt; set buying B</p>
+<p>不管用户A还是用户B最终设置了buying这个redis的key值，依然产生了并发问题，结果肯定不是我们想要的。</p>
+<h3 id="版本3"><a href="#版本3" class="headerlink" title="版本3"></a>版本3</h3><p>我们知道redis本身是指令级别的，不管是使用JRdis还是spring提供的redisTemplate,我们都无法改变这个行为，那如果解决版本2中出现的问题呢？</p>
+<p>redis中有一个指令是:setnx<br><code>Set key to hold string value if key does not exist. In that case, it is equal to SET. When key already holds a value, no operation is performed. SETNX is short for &quot;SET if Not eXists&quot;.</code><br>返回值是这样规定的:<br><code>Integer reply, specifically:
+1 if the key was set
+0 if the key was not set</code></p>
+<p>@see:<a href="http://redis.io/commands/setnx" target="_blank" rel="external">http://redis.io/commands/setnx</a></p>
+<p>这个命令可以当我们设置一个key的时候，判断这个key是否已经有值，如果没有值，则设置这样的key-value,并返回1,如果有值则不设置，直接返回0。<br>有了这个指令就很好的解决了版本2中的问题<br>用户A:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; setnx buying A  (设置一个key的名称是buying，value是A) -&gt; set expire 30-&gt; 3.用户使用支付宝或微信支付 -&gt; 4.用户购买成功 -&gt; 更改商品出售状态 -&gt; delete buying （删除redis的key）<br>用户B:1.用户看到商品 -&gt; 2.用户点击购买 -&gt; get buying -&gt; echo “此商品已卖完”</p>
+<h3 id="版本4"><a href="#版本4" class="headerlink" title="版本4"></a>版本4</h3><p>以上的版本3已经可以帮我们完成的差不多了。、<br>但是还有一点就是如果当用户A在redis中设置值的时候，突然掉线了，设置失效指定没有发送，那么其他用户依然再也不能买这个商品了。</p>
+<p>解决方案是使用pipe管道将setnx buying A和set expire 30 放到一起，一起发送给redis.</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>以上便是redis作为分布式锁的一个应用场景，笔者提到的本案例只起到抛砖引玉的作用，读者可以根据自己的业务需求，再动态添加redis的一些事物等高级功能。</p>
+<h1 id="秒杀防超卖"><a href="#秒杀防超卖" class="headerlink" title="秒杀防超卖"></a>秒杀防超卖</h1><h2 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h2><p>有一个秒杀商品，秒杀库存为10，在12：00的时候有1w用户进行点击购买，如何防止超卖</p>
+<h2 id="场景分析-1"><a href="#场景分析-1" class="headerlink" title="场景分析"></a>场景分析</h2><p>例如有一秒杀产品A,1w用户在同一秒钟进行抢购，如果每一个用户在秒杀时，都去读取秒杀库存数，判断未超买后，再去增加占用库存数，那么这样的并发问题是显而易见的。</p>
+<p>当然数据操作还有一个就是使用表的行锁进行控制，但是笔记认为这个从用户体验来讲，对于这个场景来说，是不可取的。</p>
+<p>由于redis的读写高性能的特点，我们将使用redis去处理这样的秒杀场景。</p>
+<h2 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h2><p>假设产品A,秒杀库存10。</p>
+<ol>
+<li>当创建秒杀商品A的时候，创建redis对象:set pA 10  和 数据库秒杀数据: pA 10</li>
+<li>当1w用户进行秒杀时，调用redis: INCRBY pA -1 (每次步长都为-1，然后返回扣减之后的库存量) 和 在redis中添加购买人与购买时间: hset pA 1 1478584205（hset 产品 用户 秒杀时间）</li>
+<li>如果get pA &lt; 0了，那么就不让用户购买了，echo “秒杀已卖完”</li>
+<li>当用户付款后，扣减数据库中秒杀库存数,删除redis hdel pA 1</li>
+<li>每一段时间都跑一下job去查询一下对于秒杀商品pA下单还没有付款的人，超过一段时间如果不付款则认为用户不想秒杀，则归还redis库存:INCRBY pA 1</li>
+</ol>
+<p>以上步骤中，第5步，可以根据自己的业务而定。</p>
+<h2 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h2><p>秒杀防超卖的方式有很多，以上我提供了一个redis的思考方向，其实实际生产环境，更应该考虑限流、缓存等操作。</p>
+<h1 id="对象关系存储"><a href="#对象关系存储" class="headerlink" title="对象关系存储"></a>对象关系存储</h1><h2 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h2><p>需要开发一个客服系统，此系统要求实时监控用户的登录和登出状态，并且将用户快速分配给客服。</p>
+<h2 id="场景分析-2"><a href="#场景分析-2" class="headerlink" title="场景分析"></a>场景分析</h2><p>因为客服系统会基于websock进行通讯，所以有可能发生断网，掉线等情况，但是却要求客服和用户的状态都是实时监控和记录的。</p>
+<p>故采用redis的存储方式解决该该应用场景出现的问题。</p>
+<p>redis 主要应该记录用户信息，客服信息，以及两者之间的关系:用户-客服 1-1   客服-用户 n-1</p>
+<p>所以这里边我们用到了redis中的hash结构，set结构。</p>
+<h2 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="用户设计"><a href="#用户设计" class="headerlink" title="用户设计"></a>用户设计</h3><p>normaluser:(普通用户 hash)<br>  用户1:<br>    normaluser:1      status      1<br>    normaluser:1      nickname    admin<br>    normaluser:1      customerid  1<br>  用户2:<br>    normaluser:2      status      1<br>    normaluser:2      nickname    admin2<br>    normaluser:2      customerid  1</p>
+<p>  redis脚本:<br>  hset    normaluser:1      status      1<br>  hset    normaluser:1      nickname    admin<br>  hset    normaluser:1      customerid  1<br>  hset    normaluser:2      status      1<br>  hset    normaluser:2      nickname    admin2<br>  hset    normaluser:2      customerid  1</p>
+<h3 id="用户设计-1"><a href="#用户设计-1" class="headerlink" title="用户设计"></a>用户设计</h3><p>  customer:(客服)<br>    customer:1    status        1<br>    customer:1    nickname      aa<br>    customer:2    status        1<br>    customer:2    nickname      bb</p>
+<pre><code>redis脚本:
+hset      customer:1    status        1
+hset      customer:1    nickname      aa
+hset      customer:2    status        1
+hset      customer:2    nickname      bb
+</code></pre><h3 id="场景1-客服登录"><a href="#场景1-客服登录" class="headerlink" title="场景1:客服登录"></a>场景1:客服登录</h3><pre><code>1)认证客服登录(认证方式可使用OAuth认证或普通用户名名认证)
+2）获取客服的基本信息(如客服唯一标识位:1 和昵称:aa  并设定登录状态为登录状态:1)，存放redis:
+  hset      customer:1    status        1
+  hset      customer:1    nickname      aa
+3)把登录后的客服放入redis中(此步骤是为了方便查询所有客服)
+  sadd      kf         1
+  注意:客服退出后可以使用:sremove sadd kf 1,但是如果是客服掉线的情况下是否还可以转移给掉线的客服
+</code></pre><h3 id="场景2-用户登录"><a href="#场景2-用户登录" class="headerlink" title="场景2:用户登录"></a>场景2:用户登录</h3><pre><code>1)认证用户登录(目前方式使用通过appid可以直接登录，不验证用户信息，但此处需要考虑用户生成的唯一id,保证每次登录都能保证是一个用户，可能需要配合接口调用)
+2)获取用户的基本信息并且通过算法分配客服(如用户标志位为:1 和昵称admin 并设定登录状态为登录状态:1 并且被分配到的客服id:1),存放redis:
+  hset    normaluser:1      status      1
+  hset    normaluser:1      nickname    admin
+  hset    normaluser:1      customerid  1
+3)存放客服对应用户的关系(1-n):
+  hset    customerrel:1     normaluser:1    sessionid   
+</code></pre><h3 id="业务与程序需求"><a href="#业务与程序需求" class="headerlink" title="业务与程序需求:"></a>业务与程序需求:</h3><pre><code>1)查询所有在线客服( require update ):
+    i)smembers  kf
+    ii) 通过上一步获取的客服id(比如为1,2,3),然后通过客服实体查询
+        hget customer:1  status
+        hget customer:1  nickname
+2)获取某客服下的所有用户(如  客服id为1):
+    hkeys     customerrel:1    =&gt;可以获取所有普通用户的id集合(如:normaluser:1,normaluser:2,normaluser:3)
+3)获取某普通用户对应的客服(如 普通用户id为1):
+    hget    normaluser:1      customerid     =&gt;可以获取客服的id，比如1
+4)客服进行转接操作(如将用户1从客服1转到客服2):
+    hset    normaluser:1      customerid      2
+    hdel    customerrel:1     normaluser:1
+    hset    customerrel:2     normaluser:1    1
+</code></pre><h2 id="小结-2"><a href="#小结-2" class="headerlink" title="小结"></a>小结</h2><p>客服系统的设计使用到了hash存储方式和set存储方式，使用这两个存储方式更大的有点则是他们各自的特性。<br>在考虑设计redis做存储的时候，建议优先考虑hash存储。<br>redis中string的方式大多用于配置或变动不大的序列化对象。<br>redis中set的方式，主要在于集合的运算。<br>redis中的list则用于队列使用。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文只从redis作为分布式锁，秒杀并发方案和对象存储三方面来讲解redis处了缓存和队列以后还有哪些实际的应用场景，文章仅起到抛砖引玉的作用，文章中的设计都是使用伪代码进行书写的，读者只需查看逻辑和处理方式，不必过多注意细节。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+<div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton", disable="enable", onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}", style="cursor: pointer; border: 0; outline: 0; border-radius: 100%; padding: 0; margin: 0; letter-spacing: normal; text-transform: none; text-indent: 0px; text-shadow: none">
+    <span onmouseover="this.style.color='rgb(236,96,0)';this.style.background='rgb(204,204,204)'" onMouseOut="this.style.color='#fff';this.style.background='rgb(236,96,0)'" style="display: inline-block; width: 70px; height: 70px; border-radius: 100%; line-height: 81px; color: #fff; font: 400 35px/75px 'microsofty'; background: rgb(236,96,0)">赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/payimage/wechat-reward-image.png" alt="Lrwin WeChat Pay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>微信打赏</p>
+      </div>
+    
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/payimage/alipay-reward-image.png" alt="Lrwin Alipay" style="width: 200px; max-width: 100%; display: inline-block"/>
+        <p>支付宝打赏</p>
+      </div>
+    
+  </div>
+</div>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/redis/" rel="tag">#redis</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/28/如何优雅的设计java异常/" rel="next" title="如何优雅的设计java异常">
+                <i class="fa fa-chevron-left"></i> 如何优雅的设计java异常
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/11/08/redis不谈缓存和队列/"
+     data-title="redis不谈缓存和队列"
+     data-content=""
+     data-url="http://yoursite.com/2016/11/08/redis不谈缓存和队列/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/08/redis不谈缓存和队列/"
+           data-title="redis不谈缓存和队列" data-url="http://yoursite.com/2016/11/08/redis不谈缓存和队列/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/default_avatar.jpg"
+               alt="Lrwin" />
+          <p class="site-author-name" itemprop="name">Lrwin</p>
+          <p class="site-description motion-element" itemprop="description">Lrwin</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lrwinx" target="_blank" title="github">
+                  
+                    <i class="fa fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导语"><span class="nav-number">1.</span> <span class="nav-text">导语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分布式锁"><span class="nav-number">2.</span> <span class="nav-text">分布式锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">2.1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景分析"><span class="nav-number">2.2.</span> <span class="nav-text">场景分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.3.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本1"><span class="nav-number">2.3.1.</span> <span class="nav-text">版本1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本2"><span class="nav-number">2.3.2.</span> <span class="nav-text">版本2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本3"><span class="nav-number">2.3.3.</span> <span class="nav-text">版本3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本4"><span class="nav-number">2.3.4.</span> <span class="nav-text">版本4</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">2.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#秒杀防超卖"><span class="nav-number">3.</span> <span class="nav-text">秒杀防超卖</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景-1"><span class="nav-number">3.1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景分析-1"><span class="nav-number">3.2.</span> <span class="nav-text">场景分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案-1"><span class="nav-number">3.3.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-1"><span class="nav-number">3.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象关系存储"><span class="nav-number">4.</span> <span class="nav-text">对象关系存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景-2"><span class="nav-number">4.1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景分析-2"><span class="nav-number">4.2.</span> <span class="nav-text">场景分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案-2"><span class="nav-number">4.3.</span> <span class="nav-text">解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户设计"><span class="nav-number">4.3.1.</span> <span class="nav-text">用户设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户设计-1"><span class="nav-number">4.3.2.</span> <span class="nav-text">用户设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景1-客服登录"><span class="nav-number">4.3.3.</span> <span class="nav-text">场景1:客服登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景2-用户登录"><span class="nav-number">4.3.4.</span> <span class="nav-text">场景2:用户登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务与程序需求"><span class="nav-number">4.3.5.</span> <span class="nav-text">业务与程序需求:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结-2"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lrwin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lrwin"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+      <script src="/js/src/hook-duoshuo.js"></script>
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
