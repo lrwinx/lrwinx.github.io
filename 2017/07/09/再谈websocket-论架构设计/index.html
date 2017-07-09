@@ -1,0 +1,1080 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="再谈websocket,论架构设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再谈websocket,论架构设计">
+<meta property="og:url" content="http://yoursite.com/2017/07/09/再谈websocket-论架构设计/index.html">
+<meta property="og:site_name" content="Lrwin的java技术博客">
+<meta property="og:description" content="再谈websocket,论架构设计">
+<meta property="og:image" content="http://yoursite.com/images/compareWebsocketHttp.png">
+<meta property="og:image" content="http://yoursite.com/images/httpwebsocket.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Supportedbrowser.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/message-flow-simple-broker.png">
+<meta property="og:image" content="http://yoursite.com/images/WeChat_1499585246.jpeg">
+<meta property="og:image" content="http://yoursite.com/images/WeChat_1499585625.jpeg">
+<meta property="og:updated_time" content="2017-07-09T08:20:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="再谈websocket,论架构设计">
+<meta name="twitter:description" content="再谈websocket,论架构设计">
+<meta name="twitter:image" content="http://yoursite.com/images/compareWebsocketHttp.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/09/再谈websocket-论架构设计/"/>
+
+
+  <title> 再谈websocket,论架构设计 | Lrwin的java技术博客 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Lrwin的java技术博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Lrwin的java技术博客</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                再谈websocket,论架构设计
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-09T09:43:38+08:00" content="2017-07-09">
+              2017-07-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+                        	<!--noindex-->
+                        	<span class="post-comments-count">
+                        	<span class="post-meta-divider">|</span>
+                        	<span class="post-meta-item-icon">
+                        	  <i class="fa fa-comment-o"></i>
+                        	</span>
+                        	
+                        	    <a href="/2017/07/09/再谈websocket-论架构设计/#SOHUCS" itemprop="discussionUrl">
+                        	      <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/07/09/再谈websocket-论架构设计/" itemprop="commentsCount"></span>
+                        	    </a>
+                        	
+            
+          
+
+          
+
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h1><blockquote>
+<p>本篇文章以websocket的原理和落地为核心，来叙述websocket的使用，以及相关应用场景。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="websocket概述"><a href="#websocket概述" class="headerlink" title="websocket概述"></a>websocket概述</h1><h2 id="http与websocket"><a href="#http与websocket" class="headerlink" title="http与websocket"></a>http与websocket</h2><p>如我们所了解，http连接为一次请求一次响应(request-&gt;response)，必须为同步调用方式。<br>而websocket为一次连接以后，会建立tcp连接，后续客户端与服务器交互为全双工方式的交互方式，客户端可以发送消息到服务端，服务端也可将消息发送给客户端。</p>
+<p><img src="/images/compareWebsocketHttp.png" alt="http,websocket对比" title="http,websocket"></p>
+<p>此图来源于<a href="http://www.cnblogs.com/lizhenghn/p/5155933.html" target="_blank" rel="external">Websocket协议的学习、调研和实现</a>,如有侵权问题，告知后，删除。</p>
+<p>根据上图，我们大致可以了解到http与websocket之间的区别和不同。</p>
+<h2 id="为什么要使用websocket"><a href="#为什么要使用websocket" class="headerlink" title="为什么要使用websocket"></a>为什么要使用websocket</h2><p>那么了解http与websocket之间的不同以后，我们为什么要使用websocket呢？ 他的应用场景是什么呢？</p>
+<p>我找到了一个比较符合websocket使用场景的描述</p>
+<p>“The best fit for WebSocket is in web applications where the client and server need to exchange events at high frequency and with low latency.”<br>翻译: 在客户端与服务器端交互的web应用中，websocket最适合在高频率低延迟的场景下，进行事件的交换和处理</p>
+<p>此段来源于<a href="http://docs.spring.io/spring/docs/5.0.0.M5/spring-framework-reference/html/websocket.html" target="_blank" rel="external">spring websocket的官方文档</a></p>
+<p>了解以上知识后，我举出几个比较常见的场景:</p>
+<ol>
+<li>游戏中的数据传输</li>
+<li>股票K线图数据</li>
+<li>客服系统</li>
+</ol>
+<p>根据如上所述，各个系统都来使用websocket不是更好吗？</p>
+<p>其实并不是，websocket建立连接之后，后边交互都由tcp协议进行交互，故开发的复杂度会较高。当然websocket通讯，本身要考虑的事情要比HTTP协议的通讯考虑的更多.</p>
+<p>所以如果不是有特殊要求(即 应用不是”高频率低延迟”的要求),需要优先考虑HTTP协议是否可以满足。</p>
+<p>比如新闻系统，新闻的数据晚上10分钟-30分钟，是可以接受的，那么就可以采用HTTP的方式进行轮询(polling)操作调用REST接口。</p>
+<p>当然有时我们建立了websocket通讯，并且希望通过HTTP提供的REST接口推送给某客户端，此时需要考虑REST接口接受数据传送给websocket中，进行广播式的通讯方式。</p>
+<p>至此，我已经讲述了三种交互方式的使用场景:</p>
+<ol>
+<li>websocket独立使用场景</li>
+<li>HTTP独立使用场景</li>
+<li>HTTP中转websocket使用场景</li>
+</ol>
+<h1 id="相关技术概念"><a href="#相关技术概念" class="headerlink" title="相关技术概念"></a>相关技术概念</h1><h2 id="websocket"><a href="#websocket" class="headerlink" title="websocket"></a>websocket</h2><p>websocket为一次HTTP握手后，后续通讯为tcp协议的通讯方式。</p>
+<p>当然，和HTTP一样，websocket也有一些约定的通讯方式，http通讯方式为http开头的方式,e.g. <a href="http://xxx.com/path" target="_blank" rel="external">http://xxx.com/path</a> ,websocket通讯方式则为ws开头的方式,e.g. ws://xxx.com/path</p>
+<p>SSL:</p>
+<ol>
+<li>HTTP: <a href="https://xxx.com/path" target="_blank" rel="external">https://xxx.com/path</a></li>
+<li>WEBSOCKET: wss://xxx.com/path</li>
+</ol>
+<p><img src="/images/httpwebsocket.jpg" alt="websocket通讯" title="websocket通讯"></p>
+<p>此图来源于<a href="http://www.ruanyifeng.com/blog/2017/05/websocket.html" target="_blank" rel="external">WebSocket 教程</a>,如有侵权问题，告知后，删除。</p>
+<h2 id="SockJS"><a href="#SockJS" class="headerlink" title="SockJS"></a>SockJS</h2><p>正如我们所知,websocket协议虽然已经被制定，当时还有很多版本的浏览器或浏览器厂商还没有支持的很好。</p>
+<p>所以,SockJS,可以理解为是websocket的一个备选方案。</p>
+<p>那它如何规定备选方案的呢？</p>
+<p>它大概支持这样几个方案:</p>
+<ol>
+<li>Websockets</li>
+<li>Streaming</li>
+<li>Polling</li>
+</ol>
+<p>当然，开启并使用SockJS后，它会优先选用websocket协议作为传输协议，如果浏览器不支持websocket协议，则会在其他方案中，选择一个较好的协议进行通讯。</p>
+<p>看一下目前浏览器的支持情况:</p>
+<p><img src="/images/Supportedbrowser.jpeg" alt="Supported transports, by browser" title="Supported transports, by browser"></p>
+<p>此图来源于<a href="https://github.com/sockjs/sockjs-client/" target="_blank" rel="external">github: sockjs-client</a></p>
+<p>所以，如果使用SockJS进行通讯，它将在使用上保持一致，底层由它自己去选择相应的协议。</p>
+<p>可以认为SockJS是websocket通讯层上的上层协议。</p>
+<p>底层对于开发者来说是透明的。</p>
+<h2 id="STOMP"><a href="#STOMP" class="headerlink" title="STOMP"></a>STOMP</h2><p>STOMP 中文为: 面向消息的简单文本协议</p>
+<p>websocket定义了两种传输信息类型: 文本信息 和 二进制信息  (  text and binary ).</p>
+<p>类型虽然被确定，但是他们的传输体是没有规定的。</p>
+<p>当然你可以自己来写传输体，来规定传输内容。(当然，这样的复杂度是很高的)</p>
+<p>所以,需要用一种简单的文本传输类型来规定传输内容，它可以作为通讯中的文本传输协议,即交互中的高级协议来定义交互信息。</p>
+<p>STOMP本身可以支持流类型的网络传输协议: websocket协议和tcp协议</p>
+<p>它的格式为:</p>
+<pre><code>COMMAND
+header1:value1
+header2:value2
+
+Body^@
+
+
+
+
+SUBSCRIBE
+id:sub-1
+destination:/topic/price.stock.*
+
+^@
+
+
+
+SEND
+destination:/queue/trade
+content-type:application/json
+content-length:44
+
+{&quot;action&quot;:&quot;BUY&quot;,&quot;ticker&quot;:&quot;MMM&quot;,&quot;shares&quot;,44}^@
+</code></pre><p>当然STOMP已经应用于很多消息代理中，作为一个传输协议的规定，如:RabbitMQ, ActiveMQ</p>
+<p>我们皆可以用STOMP和这类MQ进行消息交互.</p>
+<p>除了STOMP相关的代理外，实际上还提供了一个stomp.js,用于浏览器客户端使用STOMP消息协议传输的js库。</p>
+<p>让我们很方便的使用stomp.js进行与STOMP协议相关的代理进行交互.</p>
+<p>正如我们所知，如果websocket内容传输信息使用STOMP来进行交互，websocket也很好的于消息代理器进行交互(如:RabbitMQ, ActiveMQ)</p>
+<p>这样就很好的提供了消息代理的集成方案。</p>
+<p>总结，使用STOMP的优点如下:</p>
+<ol>
+<li>不需要自建一套自定义的消息格式</li>
+<li>现有stomp.js客户端(浏览器中使用)可以直接使用</li>
+<li>能路由信息到指定消息地点</li>
+<li>可以直接使用成熟的STOMP代理进行广播 如:RabbitMQ, ActiveMQ</li>
+</ol>
+<h1 id="技术落地"><a href="#技术落地" class="headerlink" title="技术落地"></a>技术落地</h1><h2 id="后端技术方案选型"><a href="#后端技术方案选型" class="headerlink" title="后端技术方案选型"></a>后端技术方案选型</h2><p>websocket服务端选型:spring websocket</p>
+<p>支持SockJS,开启SockJS后，可应对不同浏览器的通讯支持<br>支持STOMP传输协议，可无缝对接STOMP协议下的消息代理器(如:RabbitMQ, ActiveMQ)</p>
+<h2 id="前端技术方案选型"><a href="#前端技术方案选型" class="headerlink" title="前端技术方案选型"></a>前端技术方案选型</h2><p>前端选型: stomp.js,sockjs.js</p>
+<p>后端开启SOMP和SockJS支持后，前对应有对应的js库进行支持.<br>所以选用此两个库.</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>上述所用技术，是这样的逻辑:</p>
+<ol>
+<li><p>开启socktJS:<br>如果有浏览器不支持websocket协议，可以在其他两种协议中进行选择，但是对于应用层来讲，使用起来是一样的。<br>这是为了支持浏览器不支持websocket协议的一种备选方案</p>
+</li>
+<li><p>使用STOMP:<br>使用STOMP进行交互，前端可以使用stomp.js类库进行交互，消息一STOMP协议格式进行传输，这样就规定了消息传输格式。<br>消息进入后端以后，可以将消息与实现STOMP格式的代理器进行整合。<br>这是为了消息统一管理，进行机器扩容时，可进行负载均衡部署</p>
+</li>
+<li><p>使用spring websocket:<br>使用spring websocket,是因为他提供了STOMP的传输自协议的同时，还提供了StockJS的支持。<br>当然，除此之外，spring websocket还提供了权限整合的功能，还有自带天生与spring家族等相关框架进行无缝整合。</p>
+</li>
+</ol>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><h2 id="应用背景"><a href="#应用背景" class="headerlink" title="应用背景"></a>应用背景</h2><p>2016年，在公司与同事一起讨论和开发了公司内部的客服系统，由于前端技能的不足，很多通讯方面的问题，无法亲自调试前端来解决问题。</p>
+<p>因为公司技术架构体系以前后端分离为主，故前端无法协助后端调试，后端无法协助前端调试</p>
+<p>在加上websocket为公司刚启用的协议，了解的人不多，导致前后端调试问题重重。</p>
+<p>一年后的今天，我打算将前端重温，自己来调试一下前后端，来发掘一下之前联调的问题.</p>
+<p>当然，前端，我只是考虑stomp.js和sockt.js的使用。</p>
+<h2 id="代码阶段设计"><a href="#代码阶段设计" class="headerlink" title="代码阶段设计"></a>代码阶段设计</h2><h3 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h3><ol>
+<li>客服</li>
+<li>客户</li>
+</ol>
+<h3 id="登录用户状态"><a href="#登录用户状态" class="headerlink" title="登录用户状态"></a>登录用户状态</h3><ol>
+<li>上线</li>
+<li>下线</li>
+</ol>
+<h3 id="分配策略"><a href="#分配策略" class="headerlink" title="分配策略"></a>分配策略</h3><ol>
+<li>用户登陆后，应该根据用户角色进行分配</li>
+</ol>
+<h3 id="关系保存策略"><a href="#关系保存策略" class="headerlink" title="关系保存策略"></a>关系保存策略</h3><ol>
+<li>应该提供关系型保存策略: 考虑内存式策略(可用于测试)，redis式策略<br>备注:优先应该考虑实现Inmemory策略，用于测试，让关系保存策略与存储平台无关</li>
+</ol>
+<h3 id="通讯层设计"><a href="#通讯层设计" class="headerlink" title="通讯层设计"></a>通讯层设计</h3><ol>
+<li>归类topic的广播设计(通讯方式:1-n)</li>
+<li>归类queue的单点设计(通讯方式:1-1)</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="角色-1"><a href="#角色-1" class="headerlink" title="角色"></a>角色</h3><pre><code>import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import java.util.Collection;
+public enum Role {
+  CUSTOMER_SERVICE,
+  CUSTOMER;
+
+
+  public static boolean isCustomer(User user) {
+      Collection&lt;GrantedAuthority&gt; authorities = user.getAuthorities();
+      SimpleGrantedAuthority customerGrantedAuthority = new SimpleGrantedAuthority(&quot;ROLE_&quot; + Role.CUSTOMER.name());
+      return authorities.contains(customerGrantedAuthority);
+  }
+
+  public static boolean isCustomerService(User user) {
+      Collection&lt;GrantedAuthority&gt; authorities = user.getAuthorities();
+      SimpleGrantedAuthority customerServiceGrantedAuthority = new SimpleGrantedAuthority(&quot;ROLE_&quot; + Role.CUSTOMER_SERVICE.name());
+      return authorities.contains(customerServiceGrantedAuthority);
+  }
+}
+</code></pre><p>代码中User对象，为安全对象，即 spring中org.springframework.security.core.userdetails.User，为UserDetails的实现类。<br>User对象中，保存了用户授权后的很多基础权限信息，和用户信息。<br>如下:</p>
+<pre><code>public interface UserDetails extends Serializable {
+  Collection&lt;? extends GrantedAuthority&gt; getAuthorities();
+
+  String getPassword();
+
+  String getUsername();
+
+  boolean isAccountNonExpired();
+
+  boolean isAccountNonLocked();
+
+  boolean isCredentialsNonExpired();
+
+  boolean isEnabled();
+}
+</code></pre><p>方法 #isCustomer 和 #isCustomerService 用来判断用户当前是否是顾客或者是客服。</p>
+<h3 id="登录用户状态-1"><a href="#登录用户状态-1" class="headerlink" title="登录用户状态"></a>登录用户状态</h3><pre><code>public interface StatesManager {
+
+    enum StatesManagerEnum{
+        ON_LINE,
+        OFF_LINE
+    }
+
+    void changeState(User user , StatesManagerEnum statesManagerEnum);
+
+    StatesManagerEnum currentState(User user);
+
+}
+</code></pre><p>设计登录状态时，应存在登录状态管理相关的状态管理器，此管理器只负责更改用户状态和获取用户状态相关操作。<br>并不涉及其他关联逻辑，这样的代码划分，更有助于面向接口编程的扩展性</p>
+<h3 id="分配策略-1"><a href="#分配策略-1" class="headerlink" title="分配策略"></a>分配策略</h3><pre><code>public interface DistributionUsers {
+  void distribution(User user);
+}
+</code></pre><p>分配角色接口设计，只关注传入的用户，并不关注此用户是客服或者用户，具体需要如何去做，由具体的分配策略来决定。</p>
+<h3 id="关系保存策略-1"><a href="#关系保存策略-1" class="headerlink" title="关系保存策略"></a>关系保存策略</h3><pre><code>public interface RelationHandler {
+
+  void saveRelation(User customerService,User customer);
+
+  List&lt;User&gt; listCustomers(User customerService);
+
+  void deleteRelation(User customerService,User customer);
+
+  void saveCustomerService(User customerService);
+
+  List&lt;User&gt; listCustomerService();
+
+  User getCustomerService(User customer);
+
+  boolean exist(User user);
+
+  User availableNextCustomerService();
+
+}
+</code></pre><p>关系保存策略，亦是只关注关系保存相关，并不在乎于保存到哪个存储介质中。<br>实现类由Inmemory还是redis还是mysql,它并不专注。<br>但是，此处需要注意，对于这种关系保存策略，开发测试时，并不涉及高可用，可将Inmemory先做出来用于测试。<br>开发功能同时，相关同事再来开发其他介质存储的策略，性能测试以及UAT相关测试时，应切换为此介质存储的策略再进行测试。</p>
+<h3 id="用户综合管理"><a href="#用户综合管理" class="headerlink" title="用户综合管理"></a>用户综合管理</h3><p>对于不同功能的实现策略，由各个功能自己来实现，在使用上，我们仅仅根据接口编程即可。<br>所以，要将上述所有功能封装成一个工具类进行使用，这就是所谓的 <font color="red">设计模式: 门面模式</font></p>
+<pre><code>@Component
+public class UserManagerFacade {
+    @Autowired
+    private DistributionUsers distributionUsers;
+    @Autowired
+    private StatesManager statesManager;
+    @Autowired
+    private RelationHandler relationHandler;
+
+
+    public void login(User user) {
+        if (roleSemanticsMistiness(user)) {
+            throw new SessionAuthenticationException(&quot;角色语义不清晰&quot;);
+        }
+
+        distributionUsers.distribution(user);
+        statesManager.changeState(user, StatesManager.StatesManagerEnum.ON_LINE);
+    }
+    private boolean roleSemanticsMistiness(User user) {
+        Collection&lt;GrantedAuthority&gt; authorities = user.getAuthorities();
+
+        SimpleGrantedAuthority customerGrantedAuthority = new SimpleGrantedAuthority(&quot;ROLE_&quot;+Role.CUSTOMER.name());
+        SimpleGrantedAuthority customerServiceGrantedAuthority = new SimpleGrantedAuthority(&quot;ROLE_&quot;+Role.CUSTOMER_SERVICE.name());
+
+        if (authorities.contains(customerGrantedAuthority)
+                &amp;&amp; authorities.contains(customerServiceGrantedAuthority)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void logout(User user){
+        statesManager.changeState(user, StatesManager.StatesManagerEnum.OFF_LINE);
+    }
+
+
+    public User getCustomerService(User user){
+        return relationHandler.getCustomerService(user);
+    }
+
+    public List&lt;User&gt; listCustomers(User user){
+        return relationHandler.listCustomers(user);
+    }
+
+    public StatesManager.StatesManagerEnum getStates(User user){
+        return statesManager.currentState(user);
+    }
+
+}
+</code></pre><p>UserManagerFacade 中注入三个相关的功能接口:</p>
+<pre><code>@Autowired
+private DistributionUsers distributionUsers;
+@Autowired
+private StatesManager statesManager;
+@Autowired
+private RelationHandler relationHandler;
+</code></pre><p>可提供:</p>
+<ol>
+<li>登录(#login)</li>
+<li>登出(#logout)</li>
+<li>获取对应客服(#getCustomerService)</li>
+<li>获取对应用户列表(#listCustomers)</li>
+<li>当前用户登录状态(#getStates)</li>
+</ol>
+<p>这样的设计，可保证对于用户关系的管理都由UserManagerFacade来决定<br>其他内部的操作类，对于使用者来说，并不关心，对开发来讲，不同功能的策略都是透明的。</p>
+<h3 id="通讯层设计-登录，授权"><a href="#通讯层设计-登录，授权" class="headerlink" title="通讯层设计 - 登录，授权"></a>通讯层设计 - 登录，授权</h3><p>spring websocket虽然并没有要求connect时，必须授权，因为连接以后，会分发给客户端websocket的session id，来区分客户端的不同。<br>但是对于大多数应用来讲，登录授权以后，进行websocket连接是最合理的，我们可以进行权限的分配，和权限相关的管理。</p>
+<p>我模拟例子中，使用的是spring security的Inmemory的相关配置:</p>
+<pre><code>public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+      auth.inMemoryAuthentication().withUser(&quot;admin&quot;).password(&quot;admin&quot;).roles(Role.CUSTOMER_SERVICE.name());
+      auth.inMemoryAuthentication().withUser(&quot;admin1&quot;).password(&quot;admin&quot;).roles(Role.CUSTOMER_SERVICE.name());
+
+
+      auth.inMemoryAuthentication().withUser(&quot;user&quot;).password(&quot;user&quot;).roles(Role.CUSTOMER.name());
+      auth.inMemoryAuthentication().withUser(&quot;user1&quot;).password(&quot;user&quot;).roles(Role.CUSTOMER.name());
+      auth.inMemoryAuthentication().withUser(&quot;user2&quot;).password(&quot;user&quot;).roles(Role.CUSTOMER.name());
+      auth.inMemoryAuthentication().withUser(&quot;user3&quot;).password(&quot;user&quot;).roles(Role.CUSTOMER.name());
+  }
+
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+      http.csrf().disable()
+              .formLogin()
+              .and()
+              .authorizeRequests()
+              .anyRequest()
+              .authenticated();
+  }
+}
+</code></pre><p>相对较为简单，创建2个客户，4个普通用户。<br>当认证管理器认证后，会将认证后的合法认证安全对象user(即 认证后的token)放入STOMP的header中.<br>此例中，认证管理认证之后，认证的token为org.springframework.security.authentication.UsernamePasswordAuthenticationToken,<br>此token认证后，将放入websocket的header中。（即 后边会谈到的安全对象 java.security.Principal)</p>
+<h3 id="通讯层设计-websocket配置"><a href="#通讯层设计-websocket配置" class="headerlink" title="通讯层设计 - websocket配置"></a>通讯层设计 - websocket配置</h3><pre><code>@Order(Ordered.HIGHEST_PRECEDENCE + 99)
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint(&quot;/portfolio&quot;).withSockJS();
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.setApplicationDestinationPrefixes(&quot;/app&quot;);
+        config.enableSimpleBroker(&quot;/topic&quot;, &quot;/queue&quot;);
+
+    }
+}
+</code></pre><p>此配置中，有几点需进行讲解：<br>  其中端点”portfolio”,用于socktJs进行websocket连接时使用，只用于建立连接。<br>  “/topic”, “/queue”,则为STOMP的语义约束，topic语义为1-n(广播机制),queue语义为1-1(单点机制)<br>  “app”,此为应用级别的映射终点前缀，这样说有些晦涩，一会看一下示例将会清晰很多。</p>
+<h3 id="通讯层设计-创建连接"><a href="#通讯层设计-创建连接" class="headerlink" title="通讯层设计 - 创建连接"></a>通讯层设计 - 创建连接</h3><p>用于连接spring websocket的端点为portfolio，它可用于连接，看一下具体实现:</p>
+<pre><code>&lt;script src=&quot;http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js&quot;&gt;&lt;/script&gt;
+
+var socket = new SockJS(&quot;/portfolio&quot;);
+stompClient = Stomp.over(socket);
+
+stompClient.connect({}, function(frame) {
+   showGreeting(&quot;登录用户: &quot; + frame.headers[&quot;user-name&quot;]);
+});
+</code></pre><p>这样便建立了连接。 后续的其他操作就可以通过stompClient句柄进行使用了。</p>
+<h3 id="通讯层设计-spring-websocket消息模型"><a href="#通讯层设计-spring-websocket消息模型" class="headerlink" title="通讯层设计 - spring websocket消息模型"></a>通讯层设计 - spring websocket消息模型</h3><p>见模型图:</p>
+<p><img src="/images/message-flow-simple-broker.png" alt="message-flow-simple-broker" title="message-flow-simple-broker"></p>
+<p>此图来源<a href="http://docs.spring.io/spring/docs/5.0.0.M5/spring-framework-reference/html/websocket.html" target="_blank" rel="external">spring-websocket官方文档</a></p>
+<p>可以看出对于同一定于目标都为:/topic/broadcast,它的发送渠道为两种:/app/broadcast和/topic/broadcast</p>
+<p>如果为/topic/broadcast,直接可将消息体发送给定于目标（/topic/broadcast）。</p>
+<p>如果是/app/broadcast，它将消息对应在MessageHandler方法中进行处理，处理后的结果发放到broker channel中，最后再讲消息体发送给目标(/topic/broadcast)</p>
+<p>当然，这里边所说的app前缀就是刚才我们在websocket配置中的前缀.</p>
+<p>看一个例子:</p>
+<p>前端订阅:</p>
+<pre><code>stompClient.subscribe(&apos;/topic/broadcast&apos;, function(greeting){
+    showGreeting(greeting.body);
+});
+</code></pre><p>后端服务:</p>
+<pre><code>@Controller
+public class ChatWebSocket extends AbstractWebSocket{
+ @MessageMapping(&quot;broadcast&quot;)
+ public String broadcast(@Payload @Validated Message message, Principal principal) {
+     return &quot;发送人: &quot; + principal.getName() + &quot; 内容: &quot; + message.toString();
+ }
+}
+
+@Data
+public class Message {
+    @NotNull(message = &quot;标题不能为空&quot;)
+    private String title;
+    private String content;
+}
+</code></pre><p>前端发送:</p>
+<pre><code>function sendBroadcast() {
+    stompClient.send(&quot;/app/broadcast&quot;,{},JSON.stringify({&apos;content&apos;:&apos;message content&apos;}));
+}
+</code></pre><p>这种发送将消息发送给后端带有@MessageMapping注解的方法，然后组合完数据以后，在推送给订阅/topic/broadcast的前端</p>
+<pre><code>function sendBroadcast() {
+    stompClient.send(&quot;/topic/broadcast&quot;,{},JSON.stringify({&apos;content&apos;:&apos;message content&apos;}));
+}
+</code></pre><p>这种发送直接将消息发送给订阅/topic/broadcast的前端，并不通过注解方法进行流转。</p>
+<p>我相信上述这个理解已经解释清楚了spring websocket的消息模型图</p>
+<h3 id="通讯层设计-MessageMapping"><a href="#通讯层设计-MessageMapping" class="headerlink" title="通讯层设计 -  @MessageMapping"></a>通讯层设计 -  @MessageMapping</h3><p>带有这个注解的@Controller下的方法，正是对应websocket中的中转数据的处理方法。<br>那么这个注解下的方法究竟可以获取哪些数据，其中有什么原理呢？</p>
+<p><img src="/images/WeChat_1499585246.jpeg" alt="方法说明" title="方法说明"></p>
+<p>我大概说一下：<br>Message，@Payload，@Header，@Headers，MessageHeaders，MessageHeaderAccessor, SimpMessageHeaderAccessor，StompHeaderAccessor<br>以上这些都是获取消息头，消息体，或整个消息的基本对象模型。</p>
+<p>@DestinationVariable<br>这个注解用于动态监听路径，很想rest中的@PathVariable:</p>
+<p>e.g.:</p>
+<pre><code>@MessageMapping(&quot;/queue/chat/{uid}&quot;)
+public void chat(@Payload @Validated Message message, @DestinationVariable(&quot;uid&quot;) String uid, Principal principal) {
+    String msg = &quot;发送人: &quot; + principal.getName() + &quot; chat &quot;;
+    simpMessagingTemplate.convertAndSendToUser(uid,&quot;/queue/chat&quot;,msg);
+}
+</code></pre><font color="red">java.security.Principal</font>
+
+<p>这个对象我需要重点说一下。<br>他则是spring security认证之后，产生的Token对象,即本例中的UsernamePasswordAuthenticationToken.</p>
+<p><img src="/images/WeChat_1499585625.jpeg" alt="UsernamePasswordAuthenticationToken类图" title="UsernamePasswordAuthenticationToken类图"></p>
+<p>不难发现UsernamePasswordAuthenticationToken是Principal的一个实现.</p>
+<p>可以将Principal直接转成授权后的token,进行操作:</p>
+<pre><code>UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) principal;
+</code></pre><p>正如前边设计章节所说，整个用户设计都是对org.springframework.security.core.userdetails.User进行操作，那如何拿到User对象呢。<br>很简单,如下:</p>
+<pre><code>UsernamePasswordAuthenticationToken user = (UsernamePasswordAuthenticationToken) principal;
+User user = (User) user.getPrincipal()
+</code></pre><h3 id="通讯层设计-1-1-amp-amp-1-n"><a href="#通讯层设计-1-1-amp-amp-1-n" class="headerlink" title="通讯层设计 -  1-1 &amp;&amp; 1-n"></a>通讯层设计 -  1-1 &amp;&amp; 1-n</h3><p>1-n topic:<br>此方式，上述消息模型章节已经讲过，此处不再赘述</p>
+<p>1-1 queue:<br>客服-用户沟通为1-1用户交互的案例</p>
+<p>前端:</p>
+<pre><code>stompClient.subscribe(&apos;/user/queue/chat&apos;,function(greeting){
+    showGreeting(greeting.body);
+});
+</code></pre><p>后端:</p>
+<pre><code>@MessageMapping(&quot;/queue/chat/{uid}&quot;)
+public void chat(@Payload @Validated Message message, @DestinationVariable(&quot;uid&quot;) String uid, Principal principal) {
+    String msg = &quot;发送人: &quot; + principal.getName() + &quot; chat &quot;;
+    simpMessagingTemplate.convertAndSendToUser(uid,&quot;/queue/chat&quot;,msg);
+}
+</code></pre><p>发送端:</p>
+<pre><code>function chat(uid) {
+    stompClient.send(&quot;/app/queue/chat/&quot;+uid,{},JSON.stringify({&apos;title&apos;:&apos;hello&apos;,&apos;content&apos;:&apos;message content&apos;}));
+}
+</code></pre><p>上述的转化，看上去没有topic那样1-n的广播要流畅，因为代码中采用约定的方式进行开发，当然这是由spring约定的。</p>
+<p>约定转化的处理器为UserDestinationMessageHandler。</p>
+<p>大概的语义逻辑如下:</p>
+<p>“An application can send messages targeting a specific user, and Spring’s STOMP support recognizes destinations prefixed with “/user/“ for this purpose. For example, a client might subscribe to the destination “/user/queue/position-updates”. This destination will be handled by the UserDestinationMessageHandler and transformed into a destination unique to the user session, e.g. “/queue/position-updates-user123”. This provides the convenience of subscribing to a generically named destination while at the same time ensuring no collisions with other users subscribing to the same destination so that each user can receive unique stock position updates.”</p>
+<p>大致的意思是说:如果是客户端订阅了/user/queue/position-updates,将由UserDestinationMessageHandler转化为一个基于用户会话的订阅地址,比如/queue/position-updates-user123，然后可以进行通讯。</p>
+<p>例子中，我们可以把uid当成用户的会话，因为用户1-1通讯是通过spring security授权的，所以我们可以把会话当做授权后的token.<br>如登录用户token为: UsernamePasswordAuthenticationToken newToken = new UsernamePasswordAuthenticationToken(“admin”,”user”);<br>且这个token是合法的，那么/user/queue/chat订阅则为/queue/chat-admin</p>
+<p>发送时，如果通过/user/admin/queue/chat,则不通过@MessageMapping直接进行推送。<br>如果通过/app/queue/chat/admin,则将消息由@MessageMapping注解处理，最终发送给/user/admin/queue/chat终点</p>
+<p>追踪代码simpMessagingTemplate.convertAndSendToUser:</p>
+<pre><code>@Override
+public void convertAndSendToUser(String user, String destination, Object payload, Map&lt;String, Object&gt; headers,
+    MessagePostProcessor postProcessor) throws MessagingException {
+
+  Assert.notNull(user, &quot;User must not be null&quot;);
+  user = StringUtils.replace(user, &quot;/&quot;, &quot;%2F&quot;);
+  super.convertAndSend(this.destinationPrefix + user + destination, payload, headers, postProcessor);
+}
+</code></pre><p>说明最后的路径依然是/user/admin/queue/chat终点.</p>
+<h3 id="通讯层设计-SubscribeMapping"><a href="#通讯层设计-SubscribeMapping" class="headerlink" title="通讯层设计 -  @SubscribeMapping"></a>通讯层设计 -  @SubscribeMapping</h3><p>@SubscribeMapping注解可以完成订阅即返回的功能。<br>这个很像HTTP的request-response，但不同的是HTTP的请求和响应是同步的，每次请求必须得到响应。<br>而@SubscribeMapping则是异步的。意思是说：当订阅时，直到回应可响应时在进行处理。</p>
+<h3 id="通讯层设计-异常处理"><a href="#通讯层设计-异常处理" class="headerlink" title="通讯层设计 -  异常处理"></a>通讯层设计 -  异常处理</h3><p>@MessageMapping是支持jsr 303校验的，它支持@Validated注解，可抛出错误异常,如下:</p>
+<pre><code>@MessageMapping(&quot;broadcast&quot;)
+public String broadcast(@Payload @Validated Message message, Principal principal) {
+    return &quot;发送人: &quot; + principal.getName() + &quot; 内容: &quot; + message.toString();
+}
+</code></pre><p>那异常如何处理呢</p>
+<p>@MessageExceptionHandler,它可以进行消息层的异常处理</p>
+<pre><code>@MessageExceptionHandler
+@SendToUser(value = &quot;/queue/error&quot;,broadcast = false)
+public String handleException(MethodArgumentNotValidException methodArgumentNotValidException) {
+    BindingResult bindingResult = methodArgumentNotValidException.getBindingResult();
+    if (!bindingResult.hasErrors()) {
+        return &quot;未知错误&quot;;
+    }
+    List&lt;FieldError&gt; allErrors = bindingResult.getFieldErrors();
+    return &quot;jsr 303 错误: &quot; + allErrors.iterator().next().getDefaultMessage();
+}
+</code></pre><p>其中@SendToUser，是指只将消息发送给当前用户，当然，当前用户需要订阅/user/queue/error地址。<br>注解中broadcast,则表明消息不进行多会话的传播(有可能一个用户登录3个浏览器，有三个会话)，如果此broadcast=false，则只传给当前会话，不进行其他会话传播</p>
+<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><p>本文从websocket的原理和协议，以及内容相关协议等不同维度进行了详细介绍。</p>
+<p>最终以一个应用场景为例，从项目的结构设计，以及代码策略设计，设计模式等不同方面展示了websocket的通讯功能在项目中的使用。</p>
+<p>如何实现某一功能其实并不重要，重要的是得了解理论，深入理论之后，再进行开发。</p>
+<p>望此篇文章对你理解websocket有所帮助。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/payimage/wechat-reward-image.png" alt="Lrwin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/payimage/alipay-reward-image.png" alt="Lrwin Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/04/细思极恐-你真的会写java吗/" rel="next" title="细思极恐-你真的会写java吗?">
+                <i class="fa fa-chevron-left"></i> 细思极恐-你真的会写java吗?
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+          <div id="SOHUCS" ></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Lrwin" />
+          <p class="site-author-name" itemprop="name">Lrwin</p>
+          <p class="site-description motion-element" itemprop="description">Lrwin的java技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#导语"><span class="nav-number">1.</span> <span class="nav-text">导语</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#websocket概述"><span class="nav-number">2.</span> <span class="nav-text">websocket概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#http与websocket"><span class="nav-number">2.1.</span> <span class="nav-text">http与websocket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用websocket"><span class="nav-number">2.2.</span> <span class="nav-text">为什么要使用websocket</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关技术概念"><span class="nav-number">3.</span> <span class="nav-text">相关技术概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#websocket"><span class="nav-number">3.1.</span> <span class="nav-text">websocket</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SockJS"><span class="nav-number">3.2.</span> <span class="nav-text">SockJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STOMP"><span class="nav-number">3.3.</span> <span class="nav-text">STOMP</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#技术落地"><span class="nav-number">4.</span> <span class="nav-text">技术落地</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#后端技术方案选型"><span class="nav-number">4.1.</span> <span class="nav-text">后端技术方案选型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端技术方案选型"><span class="nav-number">4.2.</span> <span class="nav-text">前端技术方案选型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#应用场景"><span class="nav-number">5.</span> <span class="nav-text">应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用背景"><span class="nav-number">5.1.</span> <span class="nav-text">应用背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码阶段设计"><span class="nav-number">5.2.</span> <span class="nav-text">代码阶段设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#角色"><span class="nav-number">5.2.1.</span> <span class="nav-text">角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录用户状态"><span class="nav-number">5.2.2.</span> <span class="nav-text">登录用户状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分配策略"><span class="nav-number">5.2.3.</span> <span class="nav-text">分配策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系保存策略"><span class="nav-number">5.2.4.</span> <span class="nav-text">关系保存策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计"><span class="nav-number">5.2.5.</span> <span class="nav-text">通讯层设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">5.3.</span> <span class="nav-text">代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#角色-1"><span class="nav-number">5.3.1.</span> <span class="nav-text">角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录用户状态-1"><span class="nav-number">5.3.2.</span> <span class="nav-text">登录用户状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分配策略-1"><span class="nav-number">5.3.3.</span> <span class="nav-text">分配策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关系保存策略-1"><span class="nav-number">5.3.4.</span> <span class="nav-text">关系保存策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户综合管理"><span class="nav-number">5.3.5.</span> <span class="nav-text">用户综合管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-登录，授权"><span class="nav-number">5.3.6.</span> <span class="nav-text">通讯层设计 - 登录，授权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-websocket配置"><span class="nav-number">5.3.7.</span> <span class="nav-text">通讯层设计 - websocket配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-创建连接"><span class="nav-number">5.3.8.</span> <span class="nav-text">通讯层设计 - 创建连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-spring-websocket消息模型"><span class="nav-number">5.3.9.</span> <span class="nav-text">通讯层设计 - spring websocket消息模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-MessageMapping"><span class="nav-number">5.3.10.</span> <span class="nav-text">通讯层设计 -  @MessageMapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-1-1-amp-amp-1-n"><span class="nav-number">5.3.11.</span> <span class="nav-text">通讯层设计 -  1-1 && 1-n</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-SubscribeMapping"><span class="nav-number">5.3.12.</span> <span class="nav-text">通讯层设计 -  @SubscribeMapping</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通讯层设计-异常处理"><span class="nav-number">5.3.13.</span> <span class="nav-text">通讯层设计 -  异常处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结-1"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lrwin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+		 <script type="text/javascript">
+		(function(){
+		var appid = 'cyt4rYWPP';
+		var conf = '64c3a2b72fca9c510bec0ce5b7d0d489';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+		<script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+	
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
