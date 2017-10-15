@@ -1,0 +1,1091 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本篇文章，会根据笔者经验，介绍一下java中常见的写法优化和编程设计方面的最佳实践。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java编程最佳实践">
+<meta property="og:url" content="http://yoursite.com/2017/10/13/java编程最佳实践/index.html">
+<meta property="og:site_name" content="Lrwin的java技术博客">
+<meta property="og:description" content="本篇文章，会根据笔者经验，介绍一下java中常见的写法优化和编程设计方面的最佳实践。">
+<meta property="og:updated_time" content="2017-10-15T02:15:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java编程最佳实践">
+<meta name="twitter:description" content="本篇文章，会根据笔者经验，介绍一下java中常见的写法优化和编程设计方面的最佳实践。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/13/java编程最佳实践/"/>
+
+
+  <title> java编程最佳实践 | Lrwin的java技术博客 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Lrwin的java技术博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Lrwin的java技术博客</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java编程最佳实践
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-13T13:38:16+08:00" content="2017-10-13">
+              2017-10-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+                        	<!--noindex-->
+                        	<span class="post-comments-count">
+                        	<span class="post-meta-divider">|</span>
+                        	<span class="post-meta-item-icon">
+                        	  <i class="fa fa-comment-o"></i>
+                        	</span>
+                        	
+                        	    <a href="/2017/10/13/java编程最佳实践/#SOHUCS" itemprop="discussionUrl">
+                        	      <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2017/10/13/java编程最佳实践/" itemprop="commentsCount"></span>
+                        	    </a>
+                        	
+            
+          
+
+          
+
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="导语"><a href="#导语" class="headerlink" title="导语"></a>导语</h2><blockquote>
+<p>笔者一直保持着一定速度的文档更新频率(每半年更新一篇文章),希望在这段学习的时间中，能给读者带来一些启发，本篇文章从”数据库审计字段”，”方法级别数据验证”，””返回值约束”，“业务逻辑中的门面模式”，“业务异常设计”，“枚举状态设计”等6个方面作为出发点，讲解在真正项目开发中，java编程的最佳实践。本文的所有代码和思想都是笔者自己的实际经验和见解，希望对读者有所帮助。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="数据库审计字段"><a href="#数据库审计字段" class="headerlink" title="数据库审计字段"></a>数据库审计字段</h2><p>在做业务系统数据库设计的时候，我相信你总会创建一些相关的审计字段，比如：创建人，创建时间，更新人，更新时间。</p>
+<p>每次重复的在会话中获取创建人(更新人)和创建时间(更新时间)，然后从controller层传入到service层，在进行entity赋值，然后进行插入数据库(reposity层)。</p>
+<p>这种对业务无关的操作，最好可以做成通用的，那么，如何设计一个通用的审计日志插入呢？</p>
+<p>举例:</p>
+<ul>
+<li>框架:spring boot + mybatis</li>
+<li>数据库:mysql</li>
+<li>辅助工具:lombok</li>
+</ul>
+<h3 id="定义注解"><a href="#定义注解" class="headerlink" title="定义注解"></a>定义注解</h3><p>注解在实体中的字段，都会自动赋值到实体字段中:@CreateAt/@CreateBy/@UpdateAt/@UpdateBy</p>
+<pre><code>@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {FIELD, METHOD, ANNOTATION_TYPE})
+public @interface CreateAt {
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {FIELD, METHOD, ANNOTATION_TYPE})
+public @interface CreateBy {
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {FIELD, METHOD, ANNOTATION_TYPE})
+public @interface UpdateAt {
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value = {FIELD, METHOD, ANNOTATION_TYPE})
+public @interface UpdateBy {
+}
+</code></pre><h3 id="AOP-拦截"><a href="#AOP-拦截" class="headerlink" title="AOP 拦截"></a>AOP 拦截</h3><p>使用mybatis生成数据库代码,然后进行抽象,其他的生成类进行集成:</p>
+<pre><code>    public interface MybatisBaseRepository&lt;T, PK extends Serializable, E&gt; {
+        long countByExample(E example);
+        int deleteByExample(E example);
+        int deleteByPrimaryKey(PK id);
+        int insert(T record);
+        int insertSelective(T record);
+        List&lt;T&gt; selectByExample(E example);
+        T selectByPrimaryKey(PK id);
+        int updateByExampleSelective(@Param(&quot;record&quot;) T record, @Param(&quot;example&quot;) E example);
+        int updateByExample(@Param(&quot;record&quot;) T record, @Param(&quot;example&quot;) E example);
+        int updateByPrimaryKeySelective(T record);
+        int updateByPrimaryKey(T record);
+}
+</code></pre><p>aop需要拦截insert<strong>、update</strong>然后对其中的泛型实体<t>  T 进行赋值（这里边的T有可能包含以上注解,对这些注解的字段进行赋值）</t></p>
+<p>AOP代码如下:</p>
+<pre><code>@Slf4j
+@Aspect
+@Component
+public class MybatisAuditAOPDefault  {
+    @Pointcut(&quot;execution(* com.tasly.chm.repository..*.*Repository.insert*(..))&quot;)
+    private void insertCutMethod() {
+    }
+
+    @Pointcut(&quot;execution(* com.tasly.chm.repository..*.*Repository.update*(..))&quot;)
+    private void updateCutMethod() {
+    }
+
+    @Around(&quot;insertCutMethod()&quot;)
+    public Object doInsertAround(ProceedingJoinPoint pjp) throws Throwable {
+        Object[] args = pjp.getArgs();
+        for (Object arg : args) {
+            AuditingAction.markCreateAuditing(arg);
+        }
+        return pjp.proceed();
+    }
+
+    @Around(&quot;updateCutMethod()&quot;)
+    public Object doupdateAround(ProceedingJoinPoint pjp) throws Throwable {
+        Object[] args = pjp.getArgs();
+        for (Object arg : args) {
+            AuditingAction.markUpdateAuditing(arg);
+        }
+        return pjp.proceed();
+    }
+}
+</code></pre><h3 id="审计处理类-AuditingAction"><a href="#审计处理类-AuditingAction" class="headerlink" title="审计处理类-AuditingAction"></a>审计处理类-AuditingAction</h3><p>AuditingAction主要有两个方法:</p>
+<ol>
+<li>markCreateAuditing(Object)  : 标记插入实体的数据值</li>
+<li>markUpdateAuditing(Object) : 标记更新实体的数据值</li>
+</ol>
+<p>AuditingAction:</p>
+<pre><code>@UtilityClass
+public class AuditingAction {
+    public void markCreateAuditing(Object targetEntity) throws IllegalAccessException {
+        boolean isList = List.class.isAssignableFrom(targetEntity.getClass());
+        if(isList){
+            List list = (List) targetEntity;
+            if(CollectionUtils.isEmpty(list)){
+                return;
+            }
+            for(Object target : list){
+                doMarkCreateAudditingSingle(target);
+            }
+            return ;
+        }
+        doMarkCreateAudditingSingle(targetEntity);
+    }
+    private static void doMarkCreateAudditingSingle(Object targetEntity) throws IllegalAccessException {
+        List&lt;Field&gt; fieldList = getFields(targetEntity);
+        doMarkCreateAuditing(targetEntity, fieldList);
+    }
+    private static void doMarkCreateAuditing(Object targetEntity, List&lt;Field&gt; fieldList) throws IllegalAccessException {
+        Date currentDate = new Date();
+        for (Field field : fieldList) {
+            if (AnnotationUtils.getAnnotation(field, CreateBy.class) != null) {
+                ReflectionUtils.makeAccessible(field);ReflectionUtils.setField(field,targetEntity,getAuditingProvider().auditingUser());
+            }
+            if (AnnotationUtils.getAnnotation(field, CreateAt.class) != null) {
+                ReflectionUtils.makeAccessible(field);ReflectionUtils.setField(field,targetEntity,currentDate);
+            }
+        }
+    }
+
+    public void markUpdateAuditing(Object targetEntity) throws IllegalAccessException {
+        doMarkUpdateAuditingSingle(targetEntity);
+    }
+
+    private static void doMarkUpdateAuditingSingle(Object targetEntity) throws IllegalAccessException {
+        List&lt;Field&gt; fieldList = getFields(targetEntity);
+        Date currentDate = new Date();
+        for (Field field : fieldList) {
+            if (AnnotationUtils.getAnnotation(field, UpdateBy.class) != null) {
+                ReflectionUtils.makeAccessible(field);                    ReflectionUtils.setField(field,targetEntity,getAuditingProvider().auditingUser());
+            }
+            if (AnnotationUtils.getAnnotation(field, UpdateAt.class) != null) {
+                ReflectionUtils.makeAccessible(field);
+                ReflectionUtils.setField(field,targetEntity,currentDate);
+            }
+        }
+    }
+    private static List&lt;Field&gt; getFields(Object targetEntity) {
+        List&lt;Field&gt; fieldList = new ArrayList&lt;&gt;();
+        Class tempClass = targetEntity.getClass();
+        while (tempClass != null) {//当父类为null的时候说明到达了最上层的父类(Object类).
+            fieldList.addAll(Arrays.asList(tempClass.getDeclaredFields()));
+            tempClass = tempClass.getSuperclass(); //得到父类,然后赋给自己
+        }
+        return fieldList;
+    }
+
+    private AuditingProvider getAuditingProvider() {
+        return SpringContexts.getBeansByClass(AuditingProvider.class)
+                .values()
+                .stream()
+                .filter(auditingProvider -&gt; !SystemMetaObject.forObject(auditingProvider).hasGetter(&quot;h&quot;))//不是MapperProxy的代理类
+                .findFirst()
+                .orElseThrow(NotFoundAuditingProvider::new);
+    }
+}
+</code></pre><h3 id="审计人提供者-AuditingProvider"><a href="#审计人提供者-AuditingProvider" class="headerlink" title="审计人提供者 AuditingProvider"></a>审计人提供者 AuditingProvider</h3><pre><code>public interface AuditingProvider {
+    String auditingUser();
+}
+</code></pre><p>  需要实现提供器类，负责提供审计人的操作,默认实现如:</p>
+<pre><code>public class MybatisAuditingProvider implements AuditingProvider {
+    @Override
+    public String auditingUser() {
+        return String.valueOf(SecurityUser.get().getUserId());
+    }
+}
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>自动插入审计字段信息的设计已经设计好了。、 当然，在此基础上，我还完成了AutoConfig的注解类@EnableMybatisAudit,你也可以脑洞大开的试一下。</p>
+<h2 id="方法级别数据验证"><a href="#方法级别数据验证" class="headerlink" title="方法级别数据验证"></a>方法级别数据验证</h2><p>无论写什么样的代码，提供出去的api接口，一定要很健壮。</p>
+<p>先不考虑业务逻辑的前提下，我们应该很明确的指出定义的接口的出参和入参的要求</p>
+<p>举例:<br>框架: spring boot<br>验证:jsr 303规范 (hibernate实现)<br>方式:spring 提供的方法级别验证</p>
+<h3 id="开启方法级别验证方式"><a href="#开启方法级别验证方式" class="headerlink" title="开启方法级别验证方式"></a>开启方法级别验证方式</h3><p>直接使用hibernate实现的国际化就可以，不要重复造轮子</p>
+<pre><code>@Bean
+public MethodValidationPostProcessor methodValidationPostProcessor(@Autowired LocalValidatorFactoryBean localValidatorFactoryBean) {
+    MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
+    methodValidationPostProcessor.setValidator(localValidatorFactoryBean);
+    return methodValidationPostProcessor;
+}
+
+@Bean
+public LocaleResolver localeResolver() {
+    CookieLocaleResolver slr = new CookieLocaleResolver();
+    slr.setDefaultLocale(Locale.CHINA);
+    slr.setCookieMaxAge(3600);
+    return slr;
+}
+
+@Bean
+public LocalValidatorFactoryBean validator() {
+    LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+    validator.setProviderClass(org.hibernate.validator.HibernateValidator.class);
+    validator.setValidationMessageSource(getMessageSource());
+    return validator;
+}
+
+private ResourceBundleMessageSource getMessageSource(){
+    ResourceBundleMessageSource rbms = new ResourceBundleMessageSource();
+    rbms.setDefaultEncoding(StandardCharsets.UTF_8.toString());
+    rbms.setUseCodeAsDefaultMessage(false);
+    rbms.setCacheSeconds(60);
+    rbms.setBasenames(&quot;classpath:org/hibernate/validator/ValidationMessages&quot;);
+    return rbms;
+}
+</code></pre><h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><p>我们要在业务接口中定义出参和入参的要求，这些注解我相信你很熟悉了，对 ，没错，是jsr 303规范验证:</p>
+<pre><code>public interface PlanService {
+    @NotNull
+    CreatedPlanBO addPlanCompleted(@NotNull @Valid CreatedPlanBO createdPlanBO);
+
+    @NotNull
+    Plan addPlan(@NotNull @Valid PlanBO planBO);
+
+    Plan addOneYearToPlan(@NotNull Integer id) throws PlanNotFoundException;
+
+    void deleteOneYearToPlan(@NotNull Integer id)
+            throws PlanNotFoundException,PlanAtLeastOneYearException;
+
+    void deletePlan(@NotNull Integer id) throws PlanNotFoundException;
+}
+</code></pre><p>要在实现类中一定要标识注解 @Validated, 否则不生效的,看一下实现：</p>
+<pre><code>@Validated
+@Service
+public class PlanServiceImpl implements PlanService {
+
+//省略代码实现
+
+}
+</code></pre><p>这样我们使用其他人写的service时，直接看到接口定义就可以使用了，很方便。</p>
+<p>尤其这样的接口定义 ：</p>
+<pre><code>@NotNull
+List&lt;String&gt; listString();
+</code></pre><p>这样，我们就知道这个接口返回值，如果没有数据，则会返回空集合，而不是空对象(null),可以减少空指针异常的发生，并且这个接口的实现者也需要按照这样的接口定义来写。</p>
+<p>这里可以称他为约定编程。</p>
+<h3 id="其他方式"><a href="#其他方式" class="headerlink" title="其他方式"></a>其他方式</h3><p>不一定必须使用spring提供的方法验证，如果项目中不是spring项目，或者使用了早期不支持这样方法验证的spring呢，我们要怎么办呢？</p>
+<p>推荐要使用Guava:</p>
+<pre><code>Preconditions.checkNotNull();
+Preconditions.checkArgument();
+</code></pre><p>但是这样的话，就要和团队人员进行约束，比如入参必须不能为空,返回值是集合的话不能为空对象等。。</p>
+<p>我给大家的建议是，如果有集合返回值的话，使用前需要进行验证:</p>
+<pre><code>CollectionUtils.isEmpty(Collection);
+</code></pre><p>然后才进行使用，没有看到明显的方法约束的话，一定要这么做。</p>
+<p>相信墨菲定律一定存在吧!</p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>方法级别的验证，可以带来接口使用上的约束，对于调用者和实现者来说，都是一个不错的选择，如果可以，一定要这么做，如果不可以，请约束你自己!</p>
+<h2 id="返回值约束"><a href="#返回值约束" class="headerlink" title="返回值约束"></a>返回值约束</h2><p>我相信，你尝尝会有这样的迷惑： 返回值我到底能不能为空呢？</p>
+<p>有的程序员给了自己一个错误的判定:”可以为空，调用者调用的时候判断一下，如果可以为空，则怎样怎样，不为空，则怎样怎样”</p>
+<p>如果你脑海中也有以上的答案，请忘记它，因为你是错误的，起码在jdk8之后是错误的</p>
+<p>举例 ：<br>环境:jdk8<br>理念:异常设计<br>关键字:Optional</p>
+<h3 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h3><p>java.util.Optional是jdk8给我看到的很棒的东西，他教给了我如何去处理空值的问题.</p>
+<p>Optional的语义是:可以为空</p>
+<p>看代码:</p>
+<pre><code>Optional&lt;Plan&gt; get(id);
+</code></pre><p>这段代码，很漂亮，它告诉我们，通过id获取Plan，这个Plan是有可能为空的，那么可以理解为:”设计接口的作者，希望你可以通过Plan是否存在来控制你的业务逻辑”</p>
+<p>怎么样，是不是很棒</p>
+<p>在看一个接口:</p>
+<pre><code>Plan get(id);
+</code></pre><p>这个接口是很迷惑的，你只知道通过id可以获取Plan,但是其他的你却不知道。<br>这样的接口很糟糕，因为调用者害怕调用的Plan是空值，这样，他们就不得不做一些没必要的验证了。</p>
+<p>有没有什么更好的方式来告诉调用者，接口一定不能为空的？</p>
+<h3 id="异常声明"><a href="#异常声明" class="headerlink" title="异常声明"></a>异常声明</h3><p>异常是个好东西，比如上边的接口，我们设计成:</p>
+<pre><code>Plan get(id) throws PlanNotFoundException;
+</code></pre><p>这样调用者就很清晰的知道，如果我通过id获取Plan的时候，是有可能因为找不到抛出异常的，这样的设计，更起到警戒的作用，调用者会很清晰的知道get(id)方法必须有返回值。</p>
+<h3 id="方法验证"><a href="#方法验证" class="headerlink" title="方法验证"></a>方法验证</h3><p>还有一种方式写法，已经介绍过了，不在赘述了。</p>
+<pre><code>@Notnull
+Plan get(id);
+</code></pre><h3 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h3><p>三种接口定义方法，由你来选择:</p>
+<pre><code>Optional&lt;Plan&gt; get(id);
+
+Plan get(id) throws PlanNotFoundException;
+
+@Notnull
+Plan get(id);
+</code></pre><p>希望这样的总结，可以给你带来启示</p>
+<h2 id="业务逻辑中的门面模式"><a href="#业务逻辑中的门面模式" class="headerlink" title="业务逻辑中的门面模式"></a>业务逻辑中的门面模式</h2><p>我们经常碰到这样的场景，自己模块的service通常要调用其他模块的service使用，当然，这种情况下，一般都会直接调用，然后完成自己的service.</p>
+<p>我想说，如果你是这么想的，恭喜你，后期你会遇到无穷无尽的service嵌套service，并且埋点做起来很难。如果你的service很慢，你会检查是你的service慢，还是调用其他人的service慢。这样会给你早晨很大的麻烦.</p>
+<p>那如何去做呢，我给大家一个建议</p>
+<p>使用门面模式进行封装。</p>
+<h3 id="创建外部模块"><a href="#创建外部模块" class="headerlink" title="创建外部模块"></a>创建外部模块</h3><p>在自己的模块创建 external 包，用来包装你调用的其他service</p>
+<h3 id="写法"><a href="#写法" class="headerlink" title="写法"></a>写法</h3><pre><code>public interface PlanFamingFacade {
+
+    void checkFarmingTaskItem(@NotNull Plan plan,@NotNull  Integer FarmingTaskItemId);
+}
+</code></pre><p>他是一个面向FamingService服务类的一个转化层,我相信，好处应该是不言而喻的吧</p>
+<p>你可以做aop，做埋点，检测各种其他模块调用的效率，而且，其他模块变化的时候，你可以快速做出相应，比如做自己模块的cache.</p>
+<p>而且，你可以将调用模块返回的对象，转成你自己模块的对象(BO 对象),这样更加灵活。</p>
+<h3 id="总结-3"><a href="#总结-3" class="headerlink" title="总结"></a>总结</h3><p>门面的模式，其实在微服务设计中也是常常存在的，比如调用不同服务时的熔断机制。</p>
+<p>如果可以，一定要使用门面模式，使用后的不久，你会来感谢我的！</p>
+<h2 id="业务异常设计"><a href="#业务异常设计" class="headerlink" title="业务异常设计"></a>业务异常设计</h2><p>我之前详细讲过关于异常的理解，如果没看过，可以去看一下: <a href="http://lrwinx.github.io/2016/04/28/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1java%E5%BC%82%E5%B8%B8/" target="_blank" rel="external">如何优雅的设计java异常</a></p>
+<p>这次要讨论的是业务模块中，如何实际的使用和设计异常。以及异常在代码中的写法。</p>
+<p>举例:<br>工具: lombok</p>
+<h3 id="总异常码设计"><a href="#总异常码设计" class="headerlink" title="总异常码设计"></a>总异常码设计</h3><p>按照模块来划分大的异常码</p>
+<pre><code>public class ErrorCodeBase {
+    public static final long HERBS = 20000;
+    public static final long PROCESSING = 30000L;
+    public static final long PLAN = 40000L;
+    public static final long SEED = 50000L;
+    public static final long SOLAR_TERM = 50000L;
+    public static final long BLOCK = 70000L;
+    public static final long PRODUCTION = 80000L;
+    public static final long COMPANY = 90000L;
+}
+</code></pre><h3 id="通用异常设计"><a href="#通用异常设计" class="headerlink" title="通用异常设计"></a>通用异常设计</h3><p>义务异常需要定为为RuntimeException,这样写的好处是不需要让调用者通过异常来控制业务逻辑</p>
+<pre><code>public abstract class ServiceException extends RuntimeException{
+
+    private List&lt;ErrorInfo&gt; errors ;
+
+    public ServiceException(String description,String errorCode,String errorMsg){
+        this(description);
+        this.addError(errorCode,errorMsg);
+    }
+
+    public ServiceException(String description){
+        super(description);
+        this.errors = Lists.&lt;ErrorInfo&gt;newArrayList();
+    }
+
+    public ServiceException addError(String errorCode,String errorMsg){
+        this.errors.add(new ErrorInfo(errorCode,errorMsg));
+        return this ;
+    }
+
+    public List&lt;ErrorInfo&gt; getErrors() {
+        return errors;
+    }
+
+    protected String errorCode(long base,long index){
+        return String.valueOf(base + index);
+    }
+
+
+}
+</code></pre><p>其中ErrorInfo比较简单:</p>
+<pre><code>@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ErrorInfo {
+    private String code ;
+    private String message ;
+}
+</code></pre><p>主要是为了Controller中异常信息的转化， 可以将异常信息合理的传给前端，进行判断和显示</p>
+<h3 id="子模块异常设计"><a href="#子模块异常设计" class="headerlink" title="子模块异常设计"></a>子模块异常设计</h3><p>子模块通过ServiceException来定义各个子模块的异常.<br>异常码设计，通过偏移量来进行累加，这样统一管理，避免异常码重复</p>
+<pre><code>class ErrorCodes {
+    public static final String PLAN_NOT_FOUND = String.valueOf(ErrorCodeBase.PLAN + 1L);
+    public static final String YEAR_OUT_OF_BUNDS = String.valueOf(ErrorCodeBase.PLAN + 2L);
+
+    public static final String PLAN_TASK_NOT_FOUND = String.valueOf(ErrorCodeBase.PLAN + 3L);
+    public static final String PLAN_TASK_SUPPLY_NOT_FOUND = String.valueOf(ErrorCodeBase.PLAN + 4L);
+    public static final String PLAN_AT_LEAST_ONE_YEAR = String.valueOf(ErrorCodeBase.PLAN + 5L);
+
+    public static final String PLAN_HERBS_NOT_FOUND_EXCEPTION = String.valueOf(ErrorCodeBase.PLAN + 6L);
+    public static final String PLAN_NOT_FOUND_FARMING_TASK_ITEM_EXCEPTION = String.valueOf(ErrorCodeBase.PLAN + 7L);
+    public static final String PLAN_SOLAR_TERM_NOT_FOUND_EXCEPTION = String.valueOf(ErrorCodeBase.PLAN + 8L);
+    public static final String PLAN_COMPANY_ROLE_NOT_FOUND_EXCEPTION = String.valueOf(ErrorCodeBase.PLAN + 9L);
+}
+
+class PlanException extends ServiceException {
+    public PlanException(String errorCode, String errorMsg) {
+        super(&quot;plan_error&quot;, errorCode, errorMsg);
+    }
+}
+</code></pre><p>最终的子模块的某异常类,如下:</p>
+<pre><code>public class PlanNotFoundException extends PlanException {
+    public PlanNotFoundException( String errorMsg) {
+        super(PLAN_NOT_FOUND, errorMsg);
+    }
+    public PlanNotFoundException() {
+        super(PLAN_NOT_FOUND, &quot;种植计划未找到&quot;);
+    }
+}
+</code></pre><h3 id="业务异常使用"><a href="#业务异常使用" class="headerlink" title="业务异常使用"></a>业务异常使用</h3><p>在业务层接口定义中,你可以暴露出可能出现的异常，然后由调用者选择是否需要处理你的异常(因为是非受检异常),比如:</p>
+<pre><code>@NotNull
+   PlanTask addEmtpyPlanTask(@NotNull Integer planId, @NotNull String year)
+           throws PlanNotFoundException, YearIsOutOfBundsException;
+</code></pre><p>当然，对于中小型项目的异常处理，做法比较简单，可以在Controller层做一个通用的异常处理类，然后直接将ServiceException中的ErrorInfo直接转成前端可读的异常信息,做法比较简单，我就不在赘述了，请看代码:</p>
+<pre><code>@ExceptionHandler(ServiceException.class)
+   @ResponseStatus(HttpStatus.OK)
+   @ResponseBody
+   public ErrorEntity&lt;ErrorInfo&gt; handlerServiceException(ServiceException e){
+       log.warn(&quot;ServiceException:&quot;+e.getMessage(),e);
+       if( log.isDebugEnabled() ){
+           log.debug(&quot;--ServiceException:&quot;+e.getMessage());
+           for(ErrorInfo errorInfo : e.getErrors()){
+               log.debug(&quot;----code:{},message:{}&quot;,errorInfo.getCode(),errorInfo.getMessage());
+           }
+       }
+
+       return new ErrorEntity&lt;ErrorInfo&gt;()
+                   .setStatus(HttpStatus.FORBIDDEN.value())
+                   .setDescription(e.getMessage())
+                   .setErrors(e.getErrors());
+   }
+</code></pre><p>当然，除了上述方式以外，如果调用者需要进行异常的转化，也可以直接try..catch,然后转化成自己的异常，或者做一些其他业务逻辑(但是不建议通过异常来控制业务流程)</p>
+<h3 id="异常设计最小化"><a href="#异常设计最小化" class="headerlink" title="异常设计最小化"></a>异常设计最小化</h3><p>我之前还设计过一种比较简化的异常方式，可以在小型项目中进行异常处理(一定记住，不能因为项目小，就不进行异常处理，它可以很简单，但不能没有):</p>
+<pre><code>public enum Exceptions {
+
+    //权限角色
+    NOT_FIND_ROLE(1000001L,&quot;找不到相关角色!&quot;),
+
+    //学生模块异常
+    STUDENT_NO_TEXIST(2000001L,&quot;学生不存在&quot;),
+    STUDENT_IS_TEXIST(2000002L,&quot;学生存在&quot;),
+    STUDENT_IMPORT_IS_TEXIST(2000003L,&quot;导入的数据学生存在&quot;);
+
+    Long errCode;
+    String errMsg;
+
+    Exceptions(Long errCode, String errMsg){
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+    }
+
+    public ServiceException exception(){
+        return new ServiceException(this.errCode,this.errMsg);
+    }
+
+    public ServiceException exception(Object errData){
+        return new ServiceException(this.errCode,errData,this.errMsg);
+    }
+
+    public ServiceException exception(Object errData,Throwable e){
+        return new ServiceException(this.errCode,this.errMsg,errData,e);
+    }
+}
+</code></pre><p>这个异常，在使用起来非常方便:</p>
+<pre><code>throw Exceptions.NOT_FIND_ROLE.exception();
+</code></pre><p>这样的简约风格，可以给你带来很好的效果</p>
+<p>因为这样的设计是对异常码和异常信息编程，而不是对异常类型进行编程。</p>
+<p>所以缺点就是，在service接口定义中，不能指定异常类型。</p>
+<h3 id="一种简单风格的举例"><a href="#一种简单风格的举例" class="headerlink" title="一种简单风格的举例"></a>一种简单风格的举例</h3><p>“如果找不到，需要抛出异常”，这是一个很常见的设计方式，接口定义如下：</p>
+<pre><code>void deletePlan(@NotNull Integer id) throws PlanNotFoundException;
+</code></pre><p>实现起来，建议配合jdk8一起使用:</p>
+<pre><code>Plan plan = Optional.ofNullable(planRepository.selectByPrimaryKey(id))
+                .orElseThrow(PlanNotFoundException::new);
+</code></pre><p>因为不用一直if..else的判断，所以，你的代码会很干净。</p>
+<h3 id="总结-4"><a href="#总结-4" class="headerlink" title="总结"></a>总结</h3><p>两种异常风格的设计，和如何使用都在这里了，建议这么去设计你的异常。<br>无论异常处理怎么复杂，都是一个异常链调用的过程。非常简单!</p>
+<h2 id="枚举状态设计"><a href="#枚举状态设计" class="headerlink" title="枚举状态设计"></a>枚举状态设计</h2><p>你常常会在义务代码中见到这样的需求，这条消息的状态可能是已删除，或者这条订单的状态是已发货,这时候，则会用到枚举值,我给大家的建议是,枚举值一定要设计标志位,这样，可以将标志位存在数据库中，减少存储大小，也可以在代码中确保标志位不会改变。</p>
+<h3 id="设计枚举"><a href="#设计枚举" class="headerlink" title="设计枚举"></a>设计枚举</h3><pre><code>public enum  NeedGpsEnum {
+
+    NEED(0, &quot;需要&quot;),
+    NO_NEED(1, &quot;不需要&quot;);
+
+    NeedGpsEnum(int value, String type) {
+        this.value = value;
+        this.type = type;
+    }
+
+    private int value;
+    private String type;
+
+    public int getValue() {
+        return value;
+    }
+}
+</code></pre><p>这样的设计，保证了NEED 和NO_NEED的标志位(0/1)是不会因为枚举位置的改变而变动的，而且，从代码可读性角度，我们可以知道NEED和NO_NEED是什么意思(需要/不需要)。</p>
+<p>这样的可读性和易用性都比较强，建议这么写!</p>
+<h3 id="枚举应用场景"><a href="#枚举应用场景" class="headerlink" title="枚举应用场景"></a>枚举应用场景</h3><p>《Effective java》中，建议可以用枚举来实现单例，但是我不建议你这么做，他的语义是很不清晰的。</p>
+<p>真正的枚举用法，我理解可以分为以下几种:</p>
+<ol>
+<li>状态模式/策略模式</li>
+<li>业务属性状态(如上)</li>
+<li>固定的常量属性(比如 月份这样固定的枚举值)</li>
+</ol>
+<p>希望大家按照这三种用法去使用。这样的设计会给你带来很多好处。</p>
+<h3 id="总结-5"><a href="#总结-5" class="headerlink" title="总结"></a>总结</h3><p>枚举的使用场景给大家介绍完了，希望你再创新之前，可以先按照这样的思想去思考。等你真正创新，想到了新的枚举用法，请给我留言。(哈哈)</p>
+<h2 id="关于作者"><a href="#关于作者" class="headerlink" title="关于作者"></a>关于作者</h2><ul>
+<li>author : Lrwin</li>
+<li>blog : <a href="http://lrwinx.github.io/" target="_blank" rel="external">http://lrwinx.github.io/</a></li>
+<li>email : dreamfly@126.com</li>
+<li>github : <a href="https://github.com/lrwinx" target="_blank" rel="external">https://github.com/lrwinx</a></li>
+<li>city : TianJin</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/payimage/wechat-reward-image.png" alt="Lrwin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/payimage/alipay-reward-image.png" alt="Lrwin Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/09/再谈websocket-论架构设计/" rel="next" title="再谈websocket,论架构设计">
+                <i class="fa fa-chevron-left"></i> 再谈websocket,论架构设计
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+          <div id="SOHUCS" ></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Lrwin" />
+          <p class="site-author-name" itemprop="name">Lrwin</p>
+          <p class="site-description motion-element" itemprop="description">Lrwin的java技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#导语"><span class="nav-number">1.</span> <span class="nav-text">导语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库审计字段"><span class="nav-number">2.</span> <span class="nav-text">数据库审计字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义注解"><span class="nav-number">2.1.</span> <span class="nav-text">定义注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP-拦截"><span class="nav-number">2.2.</span> <span class="nav-text">AOP 拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#审计处理类-AuditingAction"><span class="nav-number">2.3.</span> <span class="nav-text">审计处理类-AuditingAction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#审计人提供者-AuditingProvider"><span class="nav-number">2.4.</span> <span class="nav-text">审计人提供者 AuditingProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">2.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法级别数据验证"><span class="nav-number">3.</span> <span class="nav-text">方法级别数据验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启方法级别验证方式"><span class="nav-number">3.1.</span> <span class="nav-text">开启方法级别验证方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方式"><span class="nav-number">3.2.</span> <span class="nav-text">使用方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他方式"><span class="nav-number">3.3.</span> <span class="nav-text">其他方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-1"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回值约束"><span class="nav-number">4.</span> <span class="nav-text">返回值约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Optional"><span class="nav-number">4.1.</span> <span class="nav-text">Optional</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常声明"><span class="nav-number">4.2.</span> <span class="nav-text">异常声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法验证"><span class="nav-number">4.3.</span> <span class="nav-text">方法验证</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-2"><span class="nav-number">4.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务逻辑中的门面模式"><span class="nav-number">5.</span> <span class="nav-text">业务逻辑中的门面模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建外部模块"><span class="nav-number">5.1.</span> <span class="nav-text">创建外部模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写法"><span class="nav-number">5.2.</span> <span class="nav-text">写法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-3"><span class="nav-number">5.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#业务异常设计"><span class="nav-number">6.</span> <span class="nav-text">业务异常设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#总异常码设计"><span class="nav-number">6.1.</span> <span class="nav-text">总异常码设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通用异常设计"><span class="nav-number">6.2.</span> <span class="nav-text">通用异常设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子模块异常设计"><span class="nav-number">6.3.</span> <span class="nav-text">子模块异常设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#业务异常使用"><span class="nav-number">6.4.</span> <span class="nav-text">业务异常使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常设计最小化"><span class="nav-number">6.5.</span> <span class="nav-text">异常设计最小化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一种简单风格的举例"><span class="nav-number">6.6.</span> <span class="nav-text">一种简单风格的举例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-4"><span class="nav-number">6.7.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举状态设计"><span class="nav-number">7.</span> <span class="nav-text">枚举状态设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计枚举"><span class="nav-number">7.1.</span> <span class="nav-text">设计枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#枚举应用场景"><span class="nav-number">7.2.</span> <span class="nav-text">枚举应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结-5"><span class="nav-number">7.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于作者"><span class="nav-number">8.</span> <span class="nav-text">关于作者</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lrwin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+		 <script type="text/javascript">
+		(function(){
+		var appid = 'cyt4rYWPP';
+		var conf = '64c3a2b72fca9c510bec0ce5b7d0d489';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+		<script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+	
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
