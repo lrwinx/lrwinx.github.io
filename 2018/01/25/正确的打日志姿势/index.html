@@ -1,0 +1,769 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,日志,logback," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="如何正确的打日志，如何正确的使用日志级别，相信很多人都还是很困惑的，希望这篇文章能够帮到你!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正确的打日志姿势">
+<meta property="og:url" content="http://yoursite.com/2018/01/25/正确的打日志姿势/index.html">
+<meta property="og:site_name" content="Lrwin的java技术博客">
+<meta property="og:description" content="如何正确的打日志，如何正确的使用日志级别，相信很多人都还是很困惑的，希望这篇文章能够帮到你!">
+<meta property="og:updated_time" content="2018-01-25T06:55:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正确的打日志姿势">
+<meta name="twitter:description" content="如何正确的打日志，如何正确的使用日志级别，相信很多人都还是很困惑的，希望这篇文章能够帮到你!">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/25/正确的打日志姿势/"/>
+
+
+  <title> 正确的打日志姿势 | Lrwin的java技术博客 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Lrwin的java技术博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Lrwin的java技术博客</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                正确的打日志姿势
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-01-25T14:53:34+08:00" content="2018-01-25">
+              2018-01-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+                        	<!--noindex-->
+                        	<span class="post-comments-count">
+                        	<span class="post-meta-divider">|</span>
+                        	<span class="post-meta-item-icon">
+                        	  <i class="fa fa-comment-o"></i>
+                        	</span>
+                        	
+                        	    <a href="/2018/01/25/正确的打日志姿势/#SOHUCS" itemprop="discussionUrl">
+                        	      <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/01/25/正确的打日志姿势/" itemprop="commentsCount"></span>
+                        	    </a>
+                        	
+            
+          
+
+          
+
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用slf4j"><a href="#使用slf4j" class="headerlink" title="使用slf4j"></a>使用slf4j</h2><ol>
+<li>使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一。</li>
+<li>实现方式统一使用: Logback框架</li>
+</ol>
+<h2 id="打日志的正确方式"><a href="#打日志的正确方式" class="headerlink" title="打日志的正确方式"></a>打日志的正确方式</h2><h3 id="什么时候应该打日志"><a href="#什么时候应该打日志" class="headerlink" title="什么时候应该打日志"></a>什么时候应该打日志</h3><ol>
+<li>当你遇到问题的时候，只能通过debug功能来确定问题，你应该考虑打日志，良好的系统，是可以通过日志进行问题定为的。</li>
+<li>当你碰到if…else 或者 switch这样的分支时，要在分支的首行打印日志，用来确定进入了哪个分支</li>
+<li>经常以功能为核心进行开发，你应该在提交代码前，可以确定通过日志可以看到整个流程</li>
+</ol>
+<h3 id="基本格式"><a href="#基本格式" class="headerlink" title="基本格式"></a>基本格式</h3><p>必须使用参数化信息的方式:</p>
+<pre><code>logger.debug(&quot;Processing trade with id:[{}] and symbol : [{}] &quot;, id, symbol);
+</code></pre><p>对于debug日志，必须判断是否为debug级别后，才进行使用:</p>
+<pre><code>if (logger.isDebugEnabled()) {
+    logger.debug(&quot;Processing trade with id: &quot; +id + &quot; symbol: &quot; + symbol);
+}
+</code></pre><p>不要进行字符串拼接,那样会产生很多String对象，占用空间，影响性能。<br>反例(不要这么做):</p>
+<pre><code>logger.debug(&quot;Processing trade with id: &quot; + id + &quot; symbol: &quot; + symbol);
+</code></pre><h3 id="使用-进行参数变量隔离"><a href="#使用-进行参数变量隔离" class="headerlink" title="使用[]进行参数变量隔离"></a>使用[]进行参数变量隔离</h3><p>如有参数变量，应该写成如下写法:</p>
+<pre><code>logger.debug(&quot;Processing trade with id:[{}] and symbol : [{}] &quot;, id, symbol);
+</code></pre><p>这样的格式写法，可读性更好，对于排查问题更有帮助。</p>
+<h3 id="不同级别的使用"><a href="#不同级别的使用" class="headerlink" title="不同级别的使用"></a>不同级别的使用</h3><h4 id="ERROR"><a href="#ERROR" class="headerlink" title="ERROR:"></a>ERROR:</h4><h5 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h5><p>影响到程序正常运行、当前请求正常运行的异常情况:</p>
+<ol>
+<li>打开配置文件失败</li>
+<li>所有第三方对接的异常(包括第三方返回错误码)</li>
+<li>所有影响功能使用的异常，包括:SQLException和除了业务异常之外的所有异常(RuntimeException和Exception)</li>
+</ol>
+<p>不应该出现的情况:</p>
+<ol>
+<li>比如要使用Azure传图片，但是Azure未响应</li>
+</ol>
+<p>如果有Throwable信息，需要记录完成的堆栈信息:</p>
+<pre><code>log.error(&quot;获取用户[{}]的用户信息时出错&quot;,userName,e);
+</code></pre><h5 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h5><ol>
+<li>如果进行了抛出异常操作，请不要记录error日志，由最终处理方进行处理：</li>
+</ol>
+<p>反例(不要这么做):</p>
+<pre><code>try{
+    ....
+}catch(Exception ex){
+  String errorMessage=String.format(&quot;Error while reading information of user [%s]&quot;,userName);
+  logger.error(errorMessage,ex);
+  throw new UserServiceException(errorMessage,ex);
+}
+</code></pre><h4 id="WARN"><a href="#WARN" class="headerlink" title="WARN"></a>WARN</h4><h5 id="基本概念-1"><a href="#基本概念-1" class="headerlink" title="基本概念"></a>基本概念</h5><p>不应该出现但是不影响程序、当前请求正常运行的异常情况:</p>
+<ol>
+<li>有容错机制的时候出现的错误情况</li>
+<li>找不到配置文件，但是系统能自动创建配置文件</li>
+</ol>
+<p>即将接近临界值的时候，例如：</p>
+<ol>
+<li>缓存池占用达到警告线</li>
+</ol>
+<p>业务异常的记录,比如:</p>
+<ol>
+<li>当接口抛出业务异常时，应该记录此异常</li>
+</ol>
+<h4 id="INFO"><a href="#INFO" class="headerlink" title="INFO:"></a>INFO:</h4><h5 id="基本概念-2"><a href="#基本概念-2" class="headerlink" title="基本概念"></a>基本概念</h5><p>系统运行信息</p>
+<ol>
+<li>Service方法中对于系统/业务状态的变更</li>
+<li>主要逻辑中的分步骤</li>
+</ol>
+<p>外部接口部分</p>
+<ol>
+<li>客户端请求参数(REST/WS)</li>
+<li>调用第三方时的调用参数和调用结果</li>
+</ol>
+<h5 id="说明-1"><a href="#说明-1" class="headerlink" title="说明"></a>说明</h5><ol>
+<li><p>并不是所有的service都进行出入口打点记录,单一、简单service是没有意义的(job除外,job需要记录开始和结束,)。<br>反例(不要这么做):</p>
+<p> public List<base> listByBaseType(Integer baseTypeId) {</p>
+<pre><code>    log.info(&quot;开始查询基地&quot;);
+BaseExample ex=new BaseExample();
+BaseExample.Criteria ctr = ex.createCriteria();
+ctr.andIsDeleteEqualTo(IsDelete.USE.getValue());
+Optionals.doIfPresent(baseTypeId, ctr::andBaseTypeIdEqualTo);
+    log.info(&quot;查询基地结束&quot;);
+return baseRepository.selectByExample(ex);
+</code></pre><p> }</p>
+</li>
+<li><p>对于复杂的业务逻辑，需要进行日志打点，以及埋点记录，比如电商系统中的下订单逻辑，以及OrderAction操作(业务状态变更)。</p>
+</li>
+<li><p>对于整个系统的提供出的接口(REST/WS)，使用info记录入参</p>
+</li>
+<li><p>如果所有的service为SOA架构，那么可以看成是一个外部接口提供方，那么必须记录入参。</p>
+</li>
+<li><p>调用其他第三方服务时，所有的出参和入参是必须要记录的(因为你很难追溯第三方模块发生的问题)</p>
+</li>
+</ol>
+<h4 id="DEBUG"><a href="#DEBUG" class="headerlink" title="DEBUG"></a>DEBUG</h4><h5 id="基本概念-3"><a href="#基本概念-3" class="headerlink" title="基本概念"></a>基本概念</h5><ol>
+<li>可以填写所有的想知道的相关信息(但不代表可以随便写，debug信息要有意义,最好有相关参数)</li>
+<li>生产环境需要关闭DEBUG信息</li>
+<li>如果在生产情况下需要开启DEBUG,需要使用开关进行管理，不能一直开启。</li>
+</ol>
+<h5 id="说明-2"><a href="#说明-2" class="headerlink" title="说明"></a>说明</h5><p>如果代码中出现以下代码，可以进行优化:</p>
+<pre><code>//1. 获取用户基本薪资
+
+//2. 获取用户休假情况
+
+//3. 计算用户应得薪资
+</code></pre><p>优化后的代码:</p>
+<pre><code>logger.debug(&quot;开始获取员工[{}] [{}]年基本薪资&quot;,employee,year);
+
+logger.debug(&quot;获取员工[{}] [{}]年的基本薪资为[{}]&quot;,employee,year,basicSalary);
+logger.debug(&quot;开始获取员工[{}] [{}]年[{}]月休假情况&quot;,employee,year,month);
+
+logger.debug(&quot;员工[{}][{}]年[{}]月年假/病假/事假为[{}]/[{}]/[{}]&quot;,employee,year,month,annualLeaveDays,sickLeaveDays,noPayLeaveDays);
+logger.debug(&quot;开始计算员工[{}][{}]年[{}]月应得薪资&quot;,employee,year,month);
+
+logger.debug(&quot;员工[{}] [{}]年[{}]月应得薪资为[{}]&quot;,employee,year,month,actualSalary);
+</code></pre><h4 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h4><h5 id="基本概念-4"><a href="#基本概念-4" class="headerlink" title="基本概念"></a>基本概念</h5><p>特别详细的系统运行完成信息，业务代码中，不要使用.(除非有特殊用意，否则请使用DEBUG级别替代)</p>
+<h3 id="规范示例说明"><a href="#规范示例说明" class="headerlink" title="规范示例说明"></a>规范示例说明</h3><pre><code>@Override
+@Transactional
+public void createUserAndBindMobile(@NotBlank String mobile, @NotNull User user) throws CreateConflictException{
+    boolean debug = log.isDebugEnabled();
+    if(debug){
+        log.debug(&quot;开始创建用户并绑定手机号. args[mobile=[{}],user=[{}]]&quot;, mobile, LogObjects.toString(user));
+    }
+    try {
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        userRepository.insertSelective(user);
+        if(debug){
+            log.debug(&quot;创建用户信息成功. insertedUser=[{}]&quot;,LogObjects.toString(user));
+        }
+        UserMobileRelationship relationship = new UserMobileRelationship();
+        relationship.setMobile(mobile);
+        relationship.setOpenId(user.getOpenId());
+        relationship.setCreateTime(new Date());
+        relationship.setUpdateTime(new Date());
+        userMobileRelationshipRepository.insertOnDuplicateKey(relationship);
+        if(debug){
+            log.debug(&quot;绑定手机成功. relationship=[{}]&quot;,LogObjects.toString(relationship));
+        }
+        log.info(&quot;创建用户并绑定手机号. userId=[{}],openId=[{}],mobile=[{}]&quot;,user.getId(),user.getOpenId(),mobile);
+    }catch(DuplicateKeyException e){
+        log.info(&quot;创建用户并绑定手机号失败,已存在相同的用户. openId=[{}],mobile=[{}]&quot;,user.getOpenId(),mobile);
+        throw new CreateConflictException(&quot;创建用户发生冲突, openid=[%s]&quot;,user.getOpenId());
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/payimage/wechat-reward-image.png" alt="Lrwin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/payimage/alipay-reward-image.png" alt="Lrwin Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/日志/" rel="tag">#日志</a>
+          
+            <a href="/tags/logback/" rel="tag">#logback</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/13/java编程最佳实践/" rel="next" title="java编程最佳实践">
+                <i class="fa fa-chevron-left"></i> java编程最佳实践
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+          <div id="SOHUCS" ></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Lrwin" />
+          <p class="site-author-name" itemprop="name">Lrwin</p>
+          <p class="site-description motion-element" itemprop="description">Lrwin的java技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用slf4j"><span class="nav-number">1.</span> <span class="nav-text">使用slf4j</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打日志的正确方式"><span class="nav-number">2.</span> <span class="nav-text">打日志的正确方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候应该打日志"><span class="nav-number">2.1.</span> <span class="nav-text">什么时候应该打日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本格式"><span class="nav-number">2.2.</span> <span class="nav-text">基本格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-进行参数变量隔离"><span class="nav-number">2.3.</span> <span class="nav-text">使用[]进行参数变量隔离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不同级别的使用"><span class="nav-number">2.4.</span> <span class="nav-text">不同级别的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ERROR"><span class="nav-number">2.4.1.</span> <span class="nav-text">ERROR:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本概念"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#说明"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WARN"><span class="nav-number">2.4.2.</span> <span class="nav-text">WARN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本概念-1"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">基本概念</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#INFO"><span class="nav-number">2.4.3.</span> <span class="nav-text">INFO:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本概念-2"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#说明-1"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DEBUG"><span class="nav-number">2.4.4.</span> <span class="nav-text">DEBUG</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本概念-3"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#说明-2"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TRACE"><span class="nav-number">2.4.5.</span> <span class="nav-text">TRACE</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#基本概念-4"><span class="nav-number">2.4.5.1.</span> <span class="nav-text">基本概念</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#规范示例说明"><span class="nav-number">2.5.</span> <span class="nav-text">规范示例说明</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lrwin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+		 <script type="text/javascript">
+		(function(){
+		var appid = 'cyt4rYWPP';
+		var conf = '64c3a2b72fca9c510bec0ce5b7d0d489';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+		<script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+	
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
