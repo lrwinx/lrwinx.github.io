@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,jdk 10," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="java 10 的局部类型推断,实际就是一个语法糖!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 10中的局部类型推断,好像并没什么用!(翻译文章)">
+<meta property="og:url" content="http://yoursite.com/2018/05/09/java 10中的局部类型推断,好像并没什么用!(翻译文章)/index.html">
+<meta property="og:site_name" content="Lrwin的java技术博客">
+<meta property="og:description" content="java 10 的局部类型推断,实际就是一个语法糖!">
+<meta property="og:updated_time" content="2018-05-09T06:57:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java 10中的局部类型推断,好像并没什么用!(翻译文章)">
+<meta name="twitter:description" content="java 10 的局部类型推断,实际就是一个语法糖!">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/09/java 10中的局部类型推断,好像并没什么用!(翻译文章)/"/>
+
+
+  <title> java 10中的局部类型推断,好像并没什么用!(翻译文章) | Lrwin的java技术博客 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Lrwin的java技术博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Lrwin的java技术博客</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/aboutme" rel="section">
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java 10中的局部类型推断,好像并没什么用!(翻译文章)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-05-09T13:51:34+08:00" content="2018-05-09">
+              2018-05-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+                        	<!--noindex-->
+                        	<span class="post-comments-count">
+                        	<span class="post-meta-divider">|</span>
+                        	<span class="post-meta-item-icon">
+                        	  <i class="fa fa-comment-o"></i>
+                        	</span>
+                        	
+                        	    <a href="/2018/05/09/java 10中的局部类型推断,好像并没什么用!(翻译文章)/#SOHUCS" itemprop="discussionUrl">
+                        	      <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2018/05/09/java 10中的局部类型推断,好像并没什么用!(翻译文章)/" itemprop="commentsCount"></span>
+                        	    </a>
+                        	
+            
+          
+
+          
+
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近，甲骨文公司以一种新的策略(每六个月)发布一个新的语言版本。这个策略拟定了只对近期更新的三个版本进行长期的支持和维护的说明，如下:</p>
+<ul>
+<li>当前稳定版本是java 8</li>
+<li>java 9 的支持将持续到2018年三月结束，它已经结束了;</li>
+<li>java 10 的支持将持续到2018年9月</li>
+<li>接下来的稳定版本是java 11, 它在2018年将被发布，并且至少可以支持到2023年。</li>
+</ul>
+<p><a href="http://www.oracle.com/technetwork/java/eol-135779.html" target="_blank" rel="external">想了解更多，请查看roadmap</a></p>
+<p>我们所在的公司还没有采用java 9,但是就目前来看，完全跳过这个版本，不使用它，而是等待下一个稳定版本是一个更好的选择。除了java 自己的版本变更外，还有很多其他的核心类库，比如Spring Boot 的版本,所以我们更需要小心谨慎的切换。那么，基于这些不可预期的改变，我决定先看一下java 10中的变化，在即将到来的版本中最主要的功能是<a href="https://developer.oracle.com/java/jdk-10-local-variable-type-inference" target="_blank" rel="external">本地类型推理</a>.</p>
+<p>我们看一下它的语法:</p>
+<pre><code>List&lt;User&gt; list = new ArrayList&lt;User&gt;();
+// or since Java 7
+List&lt;User&gt; list = new ArrayList&lt;&gt;();
+</code></pre><p>基本上，本地类型推断可以这么写:</p>
+<pre><code>// left side type is inferred from the right side and will be ArrayList
+var userList = new ArrayList();
+</code></pre><p>这也就是说，这样的代码的严格约束没那么严格了，但是你更需要花费更多的精力去关注你变量或者方法的命名了。因为这个”var”不具备自描述性。</p>
+<p>本地类型推断这个功能有很多编程语言早就在用了，比如Scala,C# 还有Kotlin. 光从这个方面说，java还是比较落后的，所以它决定也要支持这个。当然，这个过程中有一些比较激烈的讨论。比如:</p>
+<ul>
+<li>在Koltin 或Scala中，使用val来表示本地常量，使用var来表示变量</li>
+<li>使用const 或者 final表示本地常量，var表示变量</li>
+<li>使用final var 表示常量，使用var表示变量</li>
+<li>使用let,def或者 :=;</li>
+<li>等等。</li>
+</ul>
+<p>最后，还是决定保持了最接近的语法形式，让var表示变量，final var表示本地常量,下边是java 10的一个例子:</p>
+<pre><code>// example 1 - list is a List&lt;User&gt; type
+List&lt;User&gt; list = new ArrayList&lt;&gt;();
+// example 2 - userList is an ArrayList&lt;Object&gt; type, so you lose type information
+var userList = new ArrayList&lt;&gt;();
+// example 3 - userListFixed is an ArrayList&lt;User&gt; type, so you keep type information
+var userListFixed = new ArrayList&lt;User&gt;();
+</code></pre><p>在这两个列子中，直接使用左边的类型编译是不能推断出list的泛型的的。所以默认类型就是Object。所以你从List中获取数据iterm时就会困扰你。</p>
+<p>其实，本地类型推断这个功能对于数据转化信息是有帮助的。比如，你想要转化一种类型的对象变成另一种类型（可能有不同的属性），在jdk8中可以使用匿名类来做，你只能在一个stream范围域进行操作，举个例子，一些新的属性将通过内部管道流中进行操作，而不能通过外部进行操作的。</p>
+<pre><code>List&lt;User&gt; users = Arrays.asList(
+               new User(&quot;Elisabeth&quot;, &quot;Bennett&quot;, 20),
+               new User(&quot;Jane&quot;, &quot;Bennett&quot;, 22),
+               new User(&quot;Mary&quot;, &quot;Bennett&quot;, 18),
+               new User(&quot;Kitty&quot;, &quot;Bennett&quot;, 17),
+               new User(&quot;Lydia&quot;, &quot;Bennett&quot;, 15)
+       );
+       users.stream()
+               .map(u -&gt;
+                       new Object() {
+                           String fullName = u.firstName + &quot; &quot; + u.lastName;
+                           boolean canDrink = u.age &gt;= 18;
+                       })
+               .forEach(u -&gt; {
+                   if (u.canDrink) {
+                       System.out.println(&quot;+ &quot; + u.fullName + &quot; is of age and can drink&quot;);
+                   } else {
+                       System.out.println(&quot;- &quot; + u.fullName + &quot; is not of age and cannot drink&quot;);
+                   }
+               });
+       /*  Output will be
+        * + Elisabeth Bennett is of age and can drink
+        * + Jane Bennett is of age and can drink
+        * + Mary Bennett is of age and can drink
+        * - Kitty Bennett is not of age and cannot drink
+        * - Lydia Bennett is not of age and cannot drink
+        */
+</code></pre><p>在java 10中，你就可以在stream的外部进行操作:</p>
+<pre><code>List&lt;User&gt; users = Arrays.asList(
+         new User(&quot;Elisabeth&quot;, &quot;Bennett&quot;, 20),
+         new User(&quot;Jane&quot;, &quot;Bennett&quot;, 22),
+         new User(&quot;Mary&quot;, &quot;Bennett&quot;, 18),
+         new User(&quot;Kitty&quot;, &quot;Bennett&quot;, 17),
+         new User(&quot;Lydia&quot;, &quot;Bennett&quot;, 15)
+ );
+ final var objects = users.stream()
+         .map(u -&gt;
+                 new Object() {
+                     String fullName = u.firstName + &quot; &quot; + u.lastName;
+                     boolean canDrink = u.age &gt;= 18;
+                 })
+         .collect(Collectors.toUnmodifiableList());
+ // do something with the users...
+ System.out.println();
+ for (var o : objects) {
+     if (o.canDrink) {
+         System.out.println(&quot;+ &quot; + o.fullName + &quot; is of age and can drink&quot;);
+     } else {
+         System.out.println(&quot;- &quot; + o.fullName + &quot; is not of age and cannot drink&quot;);
+     }
+ }
+</code></pre><p>所以，在这个stream关闭的时候，被映射的属性仍然是可以连接的。但是，因为它是本地类型推断，所以你不能在当前方法之外使用它。关键字var不能在方法声明中使用，所以你不能传一个var到一个方法中。var不意味着是模糊的动态类型，它仍然是一个强类型，就是一个语法糖，这些推断类型将在编译的时候进行替换的。</p>
+<p>就我个人而言，我觉得由于历史根源的很多阻碍原因，java向前发展很难，因为它必须兼顾向后兼容性的同时，在进行创新。</p>
+<p><a href="https://www.javacodegeeks.com/2018/04/local-type-inference-in-java-10-or-if-it-quacks-like-a-duck.html" target="_blank" rel="external">原文链接</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/payimage/wechat-reward-image.png" alt="Lrwin WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/payimage/alipay-reward-image.png" alt="Lrwin Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag">#java</a>
+          
+            <a href="/tags/jdk-10/" rel="tag">#jdk 10</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/25/正确的打日志姿势/" rel="next" title="正确的打日志姿势">
+                <i class="fa fa-chevron-left"></i> 正确的打日志姿势
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+          <div id="SOHUCS" ></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Lrwin" />
+          <p class="site-author-name" itemprop="name">Lrwin</p>
+          <p class="site-description motion-element" itemprop="description">Lrwin的java技术博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lrwin</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+		 <script type="text/javascript">
+		(function(){
+		var appid = 'cyt4rYWPP';
+		var conf = '64c3a2b72fca9c510bec0ce5b7d0d489';
+		var width = window.innerWidth || document.documentElement.clientWidth;
+		if (width < 960) {
+		window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+		<script type="text/javascript" src="https://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+	
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
